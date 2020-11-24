@@ -1,28 +1,47 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Home>
+      <div slot="main" class="main">
+        <router-view></router-view>
+        <!-- <Management>
+          <div slot="module">
+            <InputGroup></InputGroup>
+          </div>
+          <div slot="table">
+            <Table></Table>
+          </div>
+        </Management> -->
+      </div>
+    </Home>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Home from "views/home/Home";
+import Management from "components/context/management/Management";
+import Table from "components/common/table/Table";
+import InputGroup from "components/context/inputGroup/InputGroup";
 export default {
-  name: 'app',
+  name: "app",
   components: {
-    HelloWorld
-  }
-}
+    Home,
+    Management,
+    Table,
+    InputGroup,
+  },
+};
 </script>
 
-<style>
+<style lang="less" scoped>
+@import url("assets/normalize.css");
+
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  height: 100%;
+  .a {
+    color: red;
+  }
+  .main {
+    height: 100%;
+  }
 }
 </style>
