@@ -10,7 +10,8 @@ module.exports = {
         'assets': '@/assets',
         'network': '@/network',
         'router': '@/router',
-        'element': '@/element'
+        'element': '@/element',
+        'common': '@/common'
       }
     }
   }

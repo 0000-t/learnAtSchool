@@ -12,14 +12,25 @@
       border
       highlight-current-row
     >
-      <el-table-column v-if="expand" type="expand">
-        <template slot-scope="">
+      <el-table-column type="expand">
+        <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
-            <slot name="expand">
-                <el-form-item label="商品名称">
-                  <div>sdnvbgksdfbnsb</div>
-                </el-form-item>
-            </slot>
+            <el-form-item label="商品名称">
+              <div>
+                {{ cate(props.row.id) }}
+                  <el-button
+                    size="mini"
+                    @click="handleEdit(scope.$index, scope.row)"
+                    >编辑</el-button
+                  >
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="handleDelete(scope.$index, scope.row)"
+                    >删除</el-button
+                  >
+              </div>
+            </el-form-item>
           </el-form>
         </template>
       </el-table-column>
@@ -89,17 +100,9 @@ export default {
       type: Number,
       default: 1,
     },
-    expand: {
-      type: Boolean,
-      default: false,
-    },
   },
   data() {
-    return {
-      tao: {
-        name: "我的",
-      },
-    };
+    return {};
   },
   methods: {
     handleEdit(index, row) {
@@ -117,6 +120,10 @@ export default {
     currentPath(e) {
       this.$emit("current", e);
     },
+
+    cate(data) {
+      return `${data}${data}`;
+    },
   },
   computed: {},
 };
@@ -130,6 +137,15 @@ export default {
     width: 98%;
     margin: 0 auto 90px;
     flex: 1;
+    // .demo-table-expand {
+    //   .el-form-item {
+    //     width: 100%;
+    //     display: flex;
+    //     .el-form-item__content {
+    //       flex: 1;
+    //     }
+    //   }
+    // }
   }
   .path {
     position: absolute;

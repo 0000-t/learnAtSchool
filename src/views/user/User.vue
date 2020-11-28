@@ -1,5 +1,5 @@
 <template>
-  <div class="category">
+  <div class="user">
     <Management>
       <div slot="module">
         <InputGroup
@@ -32,18 +32,18 @@
 <script>
 import Management from "components/context/management/Management";
 import Table from "components/common/table/Table";
-import InputGroup from "views/category/components/InputGroup";
-import CateDialog from "views/category/components/CateDialog";
+import InputGroup from "views/user/components/InputGroup";
+import CateDialog from "views/user/components/CateDialog";
 import { MessageBox } from "element-ui";
 import taoMessage from "common/message";
 
 import {
-  getCategoryByPathAndSize,
-  deleteCategoryById,
-  updateCategoryById,
-  appendCategory,
-  selectCategoryById,
-} from "network/category";
+  getUserByPathAndSize,
+  deleteUserById,
+  updateUserById,
+  appendUser,
+  selectUserById,
+} from "network/user";
 
 export default {
   components: {
@@ -61,7 +61,7 @@ export default {
           prop: "id",
         },
         {
-          label: "名称",
+          label: "客户Id",
           prop: "name",
         },
         {
@@ -76,12 +76,12 @@ export default {
     };
   },
   created() {
-    this.categoryByPathAndSize(1);
+    this.userByPageAndSize(1);
   },
   methods: {
     //根据分页获取分类数据
-    async categoryByPathAndSize(page, size = 10) {
-      const result = await getCategoryByPathAndSize(page, size);
+    async userByPageAndSize(page, size = 10) {
+      const result = await getuserByPageAndSize(page, size);
       this.totalElements = result.data.totalElements;
       this.tableData = result.data.content;
       this.page = page;
@@ -101,11 +101,11 @@ export default {
       })
         .then(async (confirm) => {
           //确认回调
-          let result = await deleteCategoryById(e.row.id);
+          let result = await deleteUserById(e.row.id);
           console.log(result, e.row.id);
           if (result.flag) {
             taoMessage("删除", "success");
-            this.categoryByPathAndSize(1);
+            this.userByPathAndSize(1);
           } else {
             taoMessage("删除", "error");
           }
@@ -119,26 +119,26 @@ export default {
       this.closeDialog();
       //判断是编辑还是增加操作
       if (e.edit) {
-        let result = await updateCategoryById({
+        let result = await updateUserById({
           id: e.id,
           name: e.name,
           description: e.description,
         });
         if (result.flag) {
           taoMessage("修改", "success");
-          this.categoryByPathAndSize(1);
+          this.userByPageAndSize(1);
         } else {
           taoMessage("修改", "error");
         }
       } else {
         //添加分类
-        let result = await appendCategory({
+        let result = await appendUser({
           name: e.name,
           description: e.description,
         });
         if (result.flag) {
           taoMessage("添加", "success");
-          this.categoryByPathAndSize(1);
+          this.userByPageAndSize(1);
         } else {
           taoMessage("添加", "error");
         }
@@ -146,7 +146,7 @@ export default {
     },
     //“查询”回调
     async search(e) {
-      let result = await selectCategoryById(e.id);
+      let result = await selectUserById(e.id);
       console.log(result);
       if (result.flag) {
         this.tableData = [result.data];
@@ -166,7 +166,7 @@ export default {
     },
     //改变页码的回调
     currentPath(num) {
-      this.categoryByPathAndSize(num);
+      this.userByPageAndSize(num);
     },
     //点击“添加”按钮
     append() {
@@ -175,15 +175,14 @@ export default {
     },
     //点击“显示”全部按钮
     showAll() {
-      this.categoryByPathAndSize(1);
+      this.userByPageAndSize(1);
     },
   },
-  computed: {},
 };
 </script>
 
 <style lang="less" scpoed>
-.category {
+.user {
   height: 100%;
   .slotTable {
     height: 100%;

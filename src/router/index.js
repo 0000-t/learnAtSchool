@@ -9,6 +9,9 @@ const Group = () => import('views/group/Group')
 const Test = () => import('views/test/Test')
 const Integral = () => import('views/integral/Integral')
 const Topic = () => import('views/topic/Topic')
+const Catalogue = () => import('views/catalogue/Catalogue')
+const Subject = () => import('views/subject/Subject')
+const User = () => import('views/user/User')
 
 Vue.use(VueRouter)
 
@@ -23,6 +26,10 @@ const routes = [{
   path: '/category',
   name: '分类管理',
   component: Category
+}, {
+  path: '/catalogue',
+  name: '目录管理',
+  component: Catalogue
 }, {
   path: '/course',
   name: '课程管理',
@@ -47,6 +54,14 @@ const routes = [{
   path: '/test',
   name: '考核管理',
   component: Test
+}, {
+  path: '/subject',
+  name: '课题管理',
+  component: Subject
+}, {
+  path: '/user',
+  name: '用户管理',
+  component: User
 }]
 
 const router = new VueRouter({

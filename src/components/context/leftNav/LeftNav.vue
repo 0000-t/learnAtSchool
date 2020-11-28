@@ -15,14 +15,30 @@
       text-color="#D2D3D4"
       active-text-color="#409EFF"
     >
-      <el-menu-item
-        v-for="(item, index) in myRoutes"
-        :index="item.path"
-        :key="index"
-      >
-        <i class="el-icon-menu"></i>
-        <span slot="title">{{ item.name }}</span>
-      </el-menu-item>
+      <div v-for="(items, index) in myRoutes" :key="index">
+        <el-menu-item v-if="isArray(items)" :index="items.path">
+          <i class="el-icon-menu"></i>
+          <span slot="title">{{ items.name }}</span>
+        </el-menu-item>
+        <el-submenu v-else :index="items.path">
+          <template slot="title">
+            <i class="el-icon-location"></i>
+            <span>{{ items.name }}</span>
+          </template>
+          <el-menu-item
+            v-for="(item, index) in items.children"
+            :key="index"
+            :index="item.path"
+          >
+            <router-link :to="item.path">
+              <template slot="title">
+                <i class="el-icon-location"></i>
+                <span>{{ item.name }}</span>
+              </template>
+            </router-link>
+          </el-menu-item>
+        </el-submenu>
+      </div>
     </el-menu>
   </div>
 </template>
@@ -39,7 +55,10 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
-      this.$router.replace(key);
+      this.$route.path != key && this.$router.replace(key);
+    },
+    isArray(data) {
+      return !data.children;
     },
   },
   computed: {

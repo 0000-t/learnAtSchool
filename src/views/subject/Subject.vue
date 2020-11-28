@@ -1,5 +1,5 @@
 <template>
-  <div class="course">
+  <div class="subject">
     <Management>
       <div slot="module">
         <InputGroup
@@ -9,22 +9,20 @@
         ></InputGroup>
       </div>
       <div class="slotTable" slot="table">
-        <ExpandTable
+        <Table
           :tableData="tableData"
           :title="title"
           :total="totalElements"
           :page="page"
-          :expand="true"
           @edit="handleEdit"
           @delete="handleDelete"
           @current="currentPath"
-        ></ExpandTable>
+        ></Table>
       </div>
     </Management>
     <CateDialog
       :isShow="isShow"
       :row="row"
-      :category="categoryData"
       @confirm="confirm"
       @cancel="cancel"
     ></CateDialog>
@@ -33,30 +31,24 @@
 
 <script>
 import Management from "components/context/management/Management";
-import ExpandTable from "views/course/components/ExpandTable";
-import InputGroup from "views/course/components/InputGroup";
-import CateDialog from "views/course/components/CateDialog";
-
-import taoMessage from "common/message";
+import Table from "components/common/table/Table";
+import InputGroup from "views/subject/components/InputGroup";
+import CateDialog from "views/subject/components/CateDialog";
 import { MessageBox } from "element-ui";
-import { getAllCategory } from "network/category";
+import taoMessage from "common/message";
+
 import {
-  getCourseByPathAndSize,
-  deleteCourseById,
-  updateCourseById,
-  appendCourse,
-  selectCourseById,
-  appendCatalog,
-  updateCatalog,
-  deleteCatalog,
-  appendUserCourse,
-  getCourseByUserId,
-} from "network/course";
+  getSubjectByPathAndSize,
+  deleteSubjectById,
+  updateSubjectById,
+  appendSubject,
+  selectSubjectById,
+} from "network/subject";
 
 export default {
   components: {
     Management,
-    ExpandTable,
+    Table,
     InputGroup,
     CateDialog,
   },
@@ -69,54 +61,50 @@ export default {
           prop: "id",
         },
         {
-          label: "课程名称",
+          label: "标题",
           prop: "title",
         },
         {
-          label: "任课老师",
+          label: "课程名称",
+          prop: "course",
+        },
+        {
+          label: "老师",
           prop: "teacher",
         },
         {
-          label: "课程介绍",
-          prop: "description",
+          label: "老师ID",
+          prop: "teacherId",
         },
         {
-          label: "课程类型",
-          prop: "categoryName",
+          label: "分数",
+          prop: "scope",
         },
         {
-          label: "学分",
-          prop: "allScope",
+          label: "链接",
+          prop: "url",
+        },
+        {
+          label: "用户ID",
+          prop: "userId",
         },
       ],
       row: {},
       isShow: false,
       totalElements: 0,
-      categoryData: [],
       page: 1,
-      tao: {
-        name: "tao",
-      },
     };
   },
   created() {
-    this.courseByPathAndSize(1);
+    this.subjectByPageAndSize(1);
   },
   methods: {
     //根据分页获取分类数据
-    async courseByPathAndSize(page, size = 10) {
-      const result = await getCourseByPathAndSize(page, size);
-      //获取分类名称
-      const categoryNames = await this.getCategoryNameById(result.data.content);
+    async subjectByPageAndSize(page, size = 10) {
+      const result = await getsubjectByPageAndSize(page, size);
       this.totalElements = result.data.totalElements;
+      this.tableData = result.data.content;
       this.page = page;
-      //给表格数据添加上分类名称
-      this.tableData = result.data.content.map((item) => {
-        item.categoryName = categoryNames.find(
-          (id) => item.categoryId == id.id
-        ).name;
-        return item;
-      });
     },
     //点击表格的"编辑"按钮
     handleEdit(e) {
@@ -133,11 +121,11 @@ export default {
       })
         .then(async (confirm) => {
           //确认回调
-          let result = await deleteCourseById(e.row.id);
-          console.log(result);
+          let result = await deleteSubjectById(e.row.id);
+          console.log(result, e.row.id);
           if (result.flag) {
-            this.courseByPathAndSize(1);
-            taoMessage("删除");
+            taoMessage("删除", "success");
+            this.subejctByPathAndSize(1);
           } else {
             taoMessage("删除", "error");
           }
@@ -146,105 +134,75 @@ export default {
           //取消回调
         });
     },
-
     //弹窗点击“确认”按钮
     async confirm(e) {
-      console.log(e);
       this.closeDialog();
       //判断是编辑还是增加操作
       if (e.edit) {
-        const result = await updateCourseById({
+        let result = await updateSubjectById({
           id: e.id,
-          categoryId: +e.categoryId,
+          name: e.name,
           description: e.description,
-          title: e.title,
-          teacher: e.teacher,
         });
         if (result.flag) {
-          this.courseByPathAndSize(1);
-          taoMessage("修改");
+          taoMessage("修改", "success");
+          this.subjectByPageAndSize(1);
         } else {
           taoMessage("修改", "error");
         }
       } else {
         //添加分类
-        const result = await appendCourse({
-          categoryId: +e.categoryId,
+        let result = await appendSubject({
+          name: e.name,
           description: e.description,
-          title: e.title,
-          teacher: e.teacher,
-          catalog: [
-            {
-              courseId: "",
-              file: "",
-              name: "第一章",
-              scope: 2,
-            },
-          ],
         });
         if (result.flag) {
-          this.courseByPathAndSize(1);
-          taoMessage("添加");
+          taoMessage("添加", "success");
+          this.subjectByPageAndSize(1);
         } else {
           taoMessage("添加", "error");
         }
       }
     },
-
     //“查询”回调
-    async search(e) {},
-
+    async search(e) {
+      let result = await selectSubjectById(e.id);
+      console.log(result);
+      if (result.flag) {
+        this.tableData = [result.data];
+        this.totalElements = this.tableData.length;
+        taoMessage("查询");
+      } else {
+        taoMessage("查询", "error");
+      }
+    },
     //弹窗点击“取消”按钮
     cancel() {
       this.closeDialog();
     },
-
     //关闭弹窗
     closeDialog() {
       this.isShow = false;
     },
-
     //改变页码的回调
     currentPath(num) {
-      this.courseByPathAndSize(num);
+      this.subjectByPageAndSize(num);
     },
-
     //点击“添加”按钮
     append() {
       this.row = {};
       this.isShow = true;
     },
-
     //点击“显示”全部按钮
     showAll() {
-      this.courseByPathAndSize(1);
-    },
-
-    //根据分类id获取分类名称
-    async getCategoryNameById(ids) {
-      const result = (await getAllCategory()).data;
-      this.categoryData = [...result];
-      // console.log(ids, result);
-      ids = ids
-        .map((item) => item.categoryId) //筛选出分类id
-        .filter((item, index, arr) => arr.indexOf(item, 0) === index); //分类id去重
-
-      console.log(ids);
-
-      return ids.map((id) => {
-        //根据id查找分类名称
-        return {
-          id,
-          name: result.find((item) => item.id == id).name,
-        };
-      });
+      this.subjectByPageAndSize(1);
     },
   },
 };
 </script>
 
-<style lang="less" scoped>
-.course {
+<style lang="less" scpoed>
+.subject {
   height: 100%;
   .slotTable {
     height: 100%;
