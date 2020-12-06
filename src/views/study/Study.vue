@@ -1,5 +1,5 @@
 <template>
-  <div class="user">
+  <div class="study">
     <Management>
       <div slot="module">
         <InputGroup
@@ -20,37 +20,37 @@
         ></Table>
       </div>
     </Management>
-    <UserDialog
+    <StudyDialog
       :isShow="isShow"
       :row="row"
       @confirm="confirm"
       @cancel="cancel"
-    ></UserDialog>
+    ></StudyDialog>
   </div>
 </template>
 
 <script>
 import Management from "components/context/management/Management";
 import Table from "components/common/table/Table";
-import InputGroup from "views/user/components/InputGroup";
-import UserDialog from "views/user/components/UserDialog";
+import InputGroup from "views/study/components/InputGroup";
+import StudyDialog from "views/study/components/StudyDialog";
 import { MessageBox } from "element-ui";
 import taoMessage from "common/message";
 
 import {
-  getUserByPageAndSize,
-  deleteUserById,
-  updateUserById,
-  appendUser,
-  selectUserById,
-} from "network/user";
+  getStudyByPageAndSize,
+  deleteStudyById,
+  updateStudyById,
+  appendStudy,
+  selectStudyById,
+} from "network/study";
 
 export default {
   components: {
     Management,
     Table,
     InputGroup,
-    UserDialog,
+    StudyDialog,
   },
   data() {
     return {
@@ -61,20 +61,12 @@ export default {
           prop: "id",
         },
         {
-          label: "客户Id",
-          prop: "clientId",
+          label: "名称",
+          prop: "name",
         },
         {
-          label: "呢称",
-          prop: "nickname",
-        },
-        {
-          label: "用户",
-          prop: "username",
-        },
-        {
-          label: "签名",
-          prop: "sign",
+          label: "描述",
+          prop: "description",
         },
       ],
       row: {},
@@ -84,15 +76,14 @@ export default {
     };
   },
   created() {
-    this.userByPageAndSize(1);
+    this.studyByPageAndSize(1);
   },
   methods: {
     //根据分页获取分类数据
-    async userByPageAndSize(page, size = 10) {
-      const result = await getUserByPageAndSize(page, size);
-      this.totalElements = result.data.total;
-      this.tableData = result.data.rows;
-      console.log(result);
+    async studyByPageAndSize(page, size = 10) {
+      const result = await getStudyByPageAndSize(page, size);
+      this.totalElements = result.data.totalElements;
+      this.tableData = result.data.content;
       this.page = page;
     },
     //点击表格的"编辑"按钮
@@ -110,11 +101,11 @@ export default {
       })
         .then(async (confirm) => {
           //确认回调
-          let result = await deleteUserById(e.row.id);
+          let result = await deleteStudyById(e.row.id);
           console.log(result, e.row.id);
           if (result.flag) {
             taoMessage("删除", "success");
-            this.userByPageAndSize(1);
+            this.studyByPageAndSize(1);
           } else {
             taoMessage("删除", "error");
           }
@@ -128,37 +119,26 @@ export default {
       this.closeDialog();
       //判断是编辑还是增加操作
       if (e.edit) {
-        let result = await updateUserById({
+        let result = await updateStudyById({
           id: e.id,
-          cliendId: e.cliendId,
-          nickname: e.nickname,
-          username: e.username,
-          sign: e.sign,
+          name: e.name,
+          description: e.description,
         });
         if (result.flag) {
           taoMessage("修改", "success");
-          this.userByPageAndSize(1);
+          this.studyByPageAndSize(1);
         } else {
           taoMessage("修改", "error");
         }
       } else {
-        console.log(e);
         //添加分类
-        let result = await appendUser({
-          clientId: e.cliendId,
-          id: 0,
-          nickname: e.nickname,
-          password: e.password,
-          phone: e.phone,
-          picNormal: e.picNormal,
-          picSmall: e.picSmall,
-          qrcode: e.qrcode,
-          sign: e.sign,
-          username: e.username,
+        let result = await appendStudy({
+          name: e.name,
+          description: e.description,
         });
         if (result.flag) {
           taoMessage("添加", "success");
-          this.userByPageAndSize(1);
+          this.studyByPageAndSize(1);
         } else {
           taoMessage("添加", "error");
         }
@@ -166,7 +146,7 @@ export default {
     },
     //“查询”回调
     async search(e) {
-      let result = await selectUserById(e.id);
+      let result = await selectStudyById(e.id);
       console.log(result);
       if (result.flag) {
         this.tableData = [result.data];
@@ -186,7 +166,7 @@ export default {
     },
     //改变页码的回调
     currentPath(num) {
-      this.userByPageAndSize(num);
+      this.studyByPageAndSize(num);
     },
     //点击“添加”按钮
     append() {
@@ -195,14 +175,15 @@ export default {
     },
     //点击“显示”全部按钮
     showAll() {
-      this.userByPageAndSize(1);
+      this.studyByPageAndSize(1);
     },
   },
+  computed: {},
 };
 </script>
 
 <style lang="less" scpoed>
-.user {
+.study {
   height: 100%;
   .slotTable {
     height: 100%;

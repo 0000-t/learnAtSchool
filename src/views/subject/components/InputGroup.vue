@@ -9,6 +9,9 @@
     <el-form-item>
       <el-button type="primary" @click="append">添加</el-button>
     </el-form-item>
+    <el-form-item>
+      <el-button type="primary" @click="showAll">显示全部</el-button>
+    </el-form-item>
   </el-form>
 </template>
 <script>
@@ -26,6 +29,10 @@ export default {
     },
     append() {
       this.$emit("append");
+    },
+    showAll() {
+      this.formInline.id = "";
+      this.$emit("showAll");
     },
   },
 };

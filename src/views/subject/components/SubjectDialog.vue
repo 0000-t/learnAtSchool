@@ -5,23 +5,11 @@
         <el-form-item label="标题">
           <el-input v-model="row.title"></el-input>
         </el-form-item>
+        <el-form-item label="备注">
+          <el-input v-model="row.text"></el-input>
+        </el-form-item>
         <el-form-item label="链接">
           <el-input v-model="row.url"></el-input>
-        </el-form-item>
-        <el-form-item label="用户ID">
-          <el-input v-model="row.userId"></el-input>
-        </el-form-item>
-        <el-form-item label="课程ID">
-          <el-input v-model="row.courseId"></el-input>
-        </el-form-item>
-        <el-form-item label="课程名称">
-          <el-input v-model="row.course"></el-input>
-        </el-form-item>
-        <el-form-item label="分数">
-          <el-input v-model="row.scope"></el-input>
-        </el-form-item>
-        <el-form-item label="老师名称">
-          <el-input v-model="row.teacher"></el-input>
         </el-form-item>
       </el-form>
     </div>

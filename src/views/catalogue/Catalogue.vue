@@ -8,36 +8,41 @@
         <Table
           :tableData="tableData"
           :title="title"
-          :total="11"
           @edit="handleEdit"
           @delete="handleDelete"
-          @current="currentPath"
         ></Table>
       </div>
     </Management>
-    <CateDialog
+    <CatalogueDialog
       :isShow="isShow"
       :row="row"
       @confirm="confirm"
       @cancel="cancel"
-    ></CateDialog>
+    ></CatalogueDialog>
   </div>
 </template>
 
 <script>
 import Management from "components/context/management/Management";
 import Table from "components/common/table/Table";
-import InputGroup from "views/category/components/InputGroup";
-import CateDialog from "views/category/components/CateDialog";
-import { MessageBox } from "element-ui";
+import InputGroup from "views/catalogue/components/InputGroup";
+import CatalogueDialog from "views/catalogue/components/CatalogueDialog";
 
-import { getCategoryByPathAndSize } from "network/category";
+import taoMessage from "common/message";
+import { MessageBox } from "element-ui";
+import { getAllCategory } from "network/category";
+import {
+  appendCatalog,
+  updateCatalog,
+  deleteCatalog,
+  selectCourseById,
+} from "network/course";
 export default {
   components: {
     Management,
     Table,
     InputGroup,
-    CateDialog,
+    CatalogueDialog,
   },
   data() {
     return {

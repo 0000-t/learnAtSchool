@@ -12,25 +12,14 @@
       border
       highlight-current-row
     >
-      <el-table-column type="expand">
-        <template slot-scope="props">
+      <el-table-column v-if="expand" type="expand">
+        <template slot-scope="">
           <el-form label-position="left" inline class="demo-table-expand">
-            <el-form-item label="商品名称">
-              <div>
-                {{ cate(props.row.id) }}
-                  <el-button
-                    size="mini"
-                    @click="handleEdit(scope.$index, scope.row)"
-                    >编辑</el-button
-                  >
-                  <el-button
-                    size="mini"
-                    type="danger"
-                    @click="handleDelete(scope.$index, scope.row)"
-                    >删除</el-button
-                  >
-              </div>
-            </el-form-item>
+            <slot name="expand">
+              <el-form-item label="商品名称">
+                <div>sdnvbgksdfbnsb</div>
+              </el-form-item>
+            </slot>
           </el-form>
         </template>
       </el-table-column>
@@ -42,7 +31,7 @@
         :key="index"
       >
       </el-table-column>
-      <el-table-column align="center" label="操作" width="200">
+      <el-table-column align="center" label="操作" width="250">
         <template slot-scope="scope">
           <el-button
             type="primary"
@@ -51,6 +40,14 @@
             @click="handleEdit(scope.$index, scope.row)"
           >
             编辑
+          </el-button>
+          <el-button
+            type="primary"
+            plain
+            size="mini"
+            @click="EditCata(scope.$index, scope.row)"
+          >
+            目录
           </el-button>
           <el-button
             size="mini"
@@ -100,13 +97,24 @@ export default {
       type: Number,
       default: 1,
     },
+    expand: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
-    return {};
+    return {
+      tao: {
+        name: "我的",
+      },
+    };
   },
   methods: {
     handleEdit(index, row) {
       this.$emit("edit", { index, row });
+    },
+    EditCata(index, row) {
+      this.$emit("editCata", { index, row });
     },
     handleDelete(index, row) {
       this.$emit("delete", { index, row });
@@ -119,10 +127,6 @@ export default {
     },
     currentPath(e) {
       this.$emit("current", e);
-    },
-
-    cate(data) {
-      return `${data}${data}`;
     },
   },
   computed: {},
@@ -137,15 +141,6 @@ export default {
     width: 98%;
     margin: 0 auto 90px;
     flex: 1;
-    // .demo-table-expand {
-    //   .el-form-item {
-    //     width: 100%;
-    //     display: flex;
-    //     .el-form-item__content {
-    //       flex: 1;
-    //     }
-    //   }
-    // }
   }
   .path {
     position: absolute;

@@ -3,9 +3,13 @@ import {
 } from './request.js'
 
 //根据页码获取用户信息
-export function getUserByPathAndSize(page, size = 10) {
+export function getUserByPageAndSize(page, size = 10) {
   return request({
-    url: `/user/findAll/${page}/${size}`
+    url: `/user/search/${page}/${size}`,
+    method: 'post',
+    data: {
+      searchMap: {}
+    }
   })
 }
 
@@ -20,7 +24,7 @@ export function deleteUserById(id) {
 //根据id修改用户
 export function updateUserById(data) {
   return request({
-    url: '/user',
+    url: `/user/${data.id}`,
     method: 'put',
     data
   })

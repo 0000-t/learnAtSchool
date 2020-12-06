@@ -3,9 +3,10 @@ import {
 } from './request.js'
 
 //根据页码获取课题信息
-export function getSubjectByPathAndSize(page, size = 10) {
+export function getSubjectByPageAndSize(page, size = 10) {
   return request({
-    url: `/subject/findAll/${page}/${size}`
+    url: `/subject/findAll/${page}/${size}`,
+    method: 'post'
   })
 }
 
@@ -28,6 +29,7 @@ export function updateSubjectById(data) {
 
 //添加课题信息
 export function appendSubject(data) {
+  console.log(data)
   return request({
     url: '/subject',
     method: 'post',
@@ -38,7 +40,8 @@ export function appendSubject(data) {
 //根据id查找课题
 export function selectSubjectById(id) {
   return request({
-    url: `/subject/${id}`
+    url: `/subject/search`,
+    method: 'post',
   })
 }
 

@@ -20,12 +20,12 @@
         ></Table>
       </div>
     </Management>
-    <CateDialog
+    <SubjectDialog
       :isShow="isShow"
       :row="row"
       @confirm="confirm"
       @cancel="cancel"
-    ></CateDialog>
+    ></SubjectDialog>
   </div>
 </template>
 
@@ -33,12 +33,12 @@
 import Management from "components/context/management/Management";
 import Table from "components/common/table/Table";
 import InputGroup from "views/subject/components/InputGroup";
-import CateDialog from "views/subject/components/CateDialog";
+import SubjectDialog from "views/subject/components/SubjectDialog";
 import { MessageBox } from "element-ui";
 import taoMessage from "common/message";
 
 import {
-  getSubjectByPathAndSize,
+  getSubjectByPageAndSize,
   deleteSubjectById,
   updateSubjectById,
   appendSubject,
@@ -50,7 +50,7 @@ export default {
     Management,
     Table,
     InputGroup,
-    CateDialog,
+    SubjectDialog,
   },
   data() {
     return {
@@ -65,28 +65,12 @@ export default {
           prop: "title",
         },
         {
-          label: "课程名称",
-          prop: "course",
-        },
-        {
-          label: "老师",
-          prop: "teacher",
-        },
-        {
-          label: "老师ID",
-          prop: "teacherId",
-        },
-        {
-          label: "分数",
-          prop: "scope",
+          label: "备注",
+          prop: "text",
         },
         {
           label: "链接",
           prop: "url",
-        },
-        {
-          label: "用户ID",
-          prop: "userId",
         },
       ],
       row: {},
@@ -101,9 +85,9 @@ export default {
   methods: {
     //根据分页获取分类数据
     async subjectByPageAndSize(page, size = 10) {
-      const result = await getsubjectByPageAndSize(page, size);
-      this.totalElements = result.data.totalElements;
-      this.tableData = result.data.content;
+      const result = await getSubjectByPageAndSize(page, size);
+      this.totalElements = result.data.total;
+      this.tableData = result.data.rows;
       this.page = page;
     },
     //点击表格的"编辑"按钮
@@ -125,7 +109,7 @@ export default {
           console.log(result, e.row.id);
           if (result.flag) {
             taoMessage("删除", "success");
-            this.subejctByPathAndSize(1);
+            this.subjectByPageAndSize(1);
           } else {
             taoMessage("删除", "error");
           }
@@ -141,8 +125,9 @@ export default {
       if (e.edit) {
         let result = await updateSubjectById({
           id: e.id,
-          name: e.name,
-          description: e.description,
+          text: e.text,
+          title: e.title,
+          url: e.url,
         });
         if (result.flag) {
           taoMessage("修改", "success");
@@ -153,8 +138,9 @@ export default {
       } else {
         //添加分类
         let result = await appendSubject({
-          name: e.name,
-          description: e.description,
+          text: e.text,
+          title: e.title,
+          url: e.url,
         });
         if (result.flag) {
           taoMessage("添加", "success");
@@ -166,6 +152,7 @@ export default {
     },
     //“查询”回调
     async search(e) {
+      console.log(e.id);
       let result = await selectSubjectById(e.id);
       console.log(result);
       if (result.flag) {

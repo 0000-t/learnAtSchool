@@ -16,9 +16,9 @@
         <template slot-scope="">
           <el-form label-position="left" inline class="demo-table-expand">
             <slot name="expand">
-                <el-form-item label="商品名称">
-                  <div>sdnvbgksdfbnsb</div>
-                </el-form-item>
+              <el-form-item label="商品名称">
+                <div>sdnvbgksdfbnsb</div>
+              </el-form-item>
             </slot>
           </el-form>
         </template>

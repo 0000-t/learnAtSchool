@@ -3,14 +3,21 @@
     :title="title"
     :visible.sync="isShow"
     :width="width"
+    :top="top"
     :close-on-press-escape="false"
-    :show-close="false"
+    :show-close="showClose"
+    :fullscreen="fullscreen"
+    :close-on-click-modal="false"
+    :append-to-body="appendToBody"
     @close="closeDialog"
   >
+    <slot name="title"></slot>
     <slot name="form"> </slot>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="cancel">取 消</el-button>
-      <el-button type="primary" @click="confirm">确 定</el-button>
+      <slot name="footer">
+        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="confirm">确 定</el-button>
+      </slot>
     </div>
   </el-dialog>
 </template>
@@ -29,6 +36,22 @@ export default {
     width: {
       type: String,
       default: "500px",
+    },
+    top: {
+      type: String,
+      default: "15vh",
+    },
+    fullscreen: {
+      type: Boolean,
+      default: false,
+    },
+    showClose: {
+      type: Boolean,
+      default: false,
+    },
+    appendToBody: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

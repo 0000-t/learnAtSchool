@@ -12,6 +12,7 @@ const Topic = () => import('views/topic/Topic')
 const Catalogue = () => import('views/catalogue/Catalogue')
 const Subject = () => import('views/subject/Subject')
 const User = () => import('views/user/User')
+const Study = () => import('views/study/Study')
 
 Vue.use(VueRouter)
 
@@ -62,6 +63,10 @@ const routes = [{
   path: '/user',
   name: '用户管理',
   component: User
+}, {
+  path: '/study',
+  name: '学习管理',
+  component: Study
 }]
 
 const router = new VueRouter({

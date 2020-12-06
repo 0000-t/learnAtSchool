@@ -4,6 +4,7 @@
       <div slot="module">
         <InputGroup
           @append="append"
+          @appendCatelogue="appendCata"
           @search="search"
           @showAll="showAll"
         ></InputGroup>
@@ -14,28 +15,35 @@
           :title="title"
           :total="totalElements"
           :page="page"
-          :expand="true"
           @edit="handleEdit"
+          @editCata="editCata"
           @delete="handleDelete"
           @current="currentPath"
         ></ExpandTable>
       </div>
     </Management>
-    <CateDialog
+    <CourseDialog
       :isShow="isShow"
       :row="row"
       :category="categoryData"
       @confirm="confirm"
       @cancel="cancel"
-    ></CateDialog>
+    ></CourseDialog>
+    <DetailDialog
+      ref="detailDialog"
+      :isShowDetail="isShowDetail"
+      @cancel="cancel"
+    ></DetailDialog>
   </div>
 </template>
 
 <script>
 import Management from "components/context/management/Management";
-import ExpandTable from "views/course/components/ExpandTable";
 import InputGroup from "views/course/components/InputGroup";
-import CateDialog from "views/course/components/CateDialog";
+import ExpandTable from "views/course/components/ExpandTable";
+import CourseDialog from "views/course/components/CourseDialog";
+import CataDialog from "views/course/components/CataDialog";
+import DetailDialog from "views/course/components/DetailDialog";
 
 import taoMessage from "common/message";
 import { MessageBox } from "element-ui";
@@ -58,7 +66,9 @@ export default {
     Management,
     ExpandTable,
     InputGroup,
-    CateDialog,
+    CourseDialog,
+    CataDialog,
+    DetailDialog,
   },
   data() {
     return {
@@ -88,9 +98,15 @@ export default {
           label: "学分",
           prop: "allScope",
         },
+        {
+          label: "用户",
+          prop: "users",
+        },
       ],
       row: {},
       isShow: false,
+      isShowCata: false,
+      isShowDetail: false,
       totalElements: 0,
       categoryData: [],
       page: 1,
@@ -103,22 +119,32 @@ export default {
     this.courseByPathAndSize(1);
   },
   methods: {
-    //根据分页获取分类数据
+    //根据分页获取课程数据
     async courseByPathAndSize(page, size = 10) {
       const result = await getCourseByPathAndSize(page, size);
-      //获取分类名称
-      const categoryNames = await this.getCategoryNameById(result.data.content);
       this.totalElements = result.data.totalElements;
       this.page = page;
       //给表格数据添加上分类名称
-      this.tableData = result.data.content.map((item) => {
-        item.categoryName = categoryNames.find(
-          (id) => item.categoryId == id.id
-        ).name;
-        return item;
-      });
+      console.log(result.data.content);
+      if (result.data.content.length > 0) {
+        //获取分类名称
+        const categoryNames = await this.getCategoryNameById(
+          result.data.content
+        );
+        this.tableData = result.data.content.map((item) => {
+          item.categoryName = categoryNames.find(
+            (id) => item.categoryId == id.id
+          ).name;
+          return item;
+        });
+      }
     },
-    //点击表格的"编辑"按钮
+    //点击表格的"目录"按钮
+    editCata(e) {
+      this.row = { ...e.row, edit: true };
+      this.isShowDetail = true;
+      this.$refs.detailDialog.getCatalogueByCourseId(e.row.id);
+    },
     handleEdit(e) {
       this.row = { ...e.row, edit: true };
       this.isShow = true;
@@ -147,9 +173,13 @@ export default {
         });
     },
 
+    //
+    confirmDetail() {
+      this.closeDialog();
+    },
+
     //弹窗点击“确认”按钮
     async confirm(e) {
-      console.log(e);
       this.closeDialog();
       //判断是编辑还是增加操作
       if (e.edit) {
@@ -167,21 +197,12 @@ export default {
           taoMessage("修改", "error");
         }
       } else {
-        //添加分类
-        const result = await appendCourse({
-          categoryId: +e.categoryId,
-          description: e.description,
-          title: e.title,
-          teacher: e.teacher,
-          catalog: [
-            {
-              courseId: "",
-              file: "",
-              name: "第一章",
-              scope: 2,
-            },
-          ],
-        });
+        //添加课程
+        let formData = new FormData();
+        for (let item in e) {
+          formData.append(item, e[item]);
+        }
+        const result = await appendCourse(formData);
         if (result.flag) {
           this.courseByPathAndSize(1);
           taoMessage("添加");
@@ -192,7 +213,16 @@ export default {
     },
 
     //“查询”回调
-    async search(e) {},
+    async search(e) {
+      let result = await selectCourseById(e.id);
+      if (result.flag) {
+        this.tableData = [result.data];
+        this.totalElements = this.tableData.length;
+        taoMessage("查询");
+      } else {
+        taoMessage("查询", "error");
+      }
+    },
 
     //弹窗点击“取消”按钮
     cancel() {
@@ -202,6 +232,8 @@ export default {
     //关闭弹窗
     closeDialog() {
       this.isShow = false;
+      this.isShowCata = false;
+      this.isShowDetail = false;
     },
 
     //改变页码的回调
@@ -209,35 +241,41 @@ export default {
       this.courseByPathAndSize(num);
     },
 
-    //点击“添加”按钮
+    //点击“添加课程”按钮
     append() {
       this.row = {};
       this.isShow = true;
     },
+
+    //点击“添加目录”回调
+    appendCata() {
+      this.isShowCata = true;
+    },
+
+    //
+    confirmCate() {},
 
     //点击“显示”全部按钮
     showAll() {
       this.courseByPathAndSize(1);
     },
 
-    //根据分类id获取分类名称
+    //根据课程id获取课程名称
     async getCategoryNameById(ids) {
       const result = (await getAllCategory()).data;
       this.categoryData = [...result];
       // console.log(ids, result);
-      ids = ids
-        .map((item) => item.categoryId) //筛选出分类id
-        .filter((item, index, arr) => arr.indexOf(item, 0) === index); //分类id去重
-
-      console.log(ids);
-
-      return ids.map((id) => {
-        //根据id查找分类名称
-        return {
-          id,
-          name: result.find((item) => item.id == id).name,
-        };
-      });
+      return ids
+        .map((item) => item.categoryId) //筛选出课程id
+        .filter((item, index, arr) => arr.indexOf(item, 0) === index) //课程id去重
+        .map((id) => {
+          //根据id查找课程名称
+          let data = result.find((item) => item.id == id);
+          return {
+            id,
+            name: data ? data.name : "",
+          };
+        });
     },
   },
 };
