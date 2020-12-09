@@ -13,6 +13,7 @@ const Catalogue = () => import('views/catalogue/Catalogue')
 const Subject = () => import('views/subject/Subject')
 const User = () => import('views/user/User')
 const Study = () => import('views/study/Study')
+const Login = () => import('views/login/Login')
 
 Vue.use(VueRouter)
 
@@ -22,56 +23,128 @@ const routes = [{
 }, {
   path: '/chart',
   name: '统计分析',
-  component: Chart
+  component: Chart,
+  meta: {
+    icon: "el-icon-date"
+  }
 }, {
   path: '/category',
   name: '分类管理',
-  component: Category
+  component: Category,
+  meta: {
+    icon: "el-icon-menu"
+  }
 }, {
   path: '/catalogue',
   name: '目录管理',
-  component: Catalogue
+  component: Catalogue,
+  meta: {
+    icon: "el-icon-date"
+  }
 }, {
   path: '/course',
   name: '课程管理',
-  component: Course
+  component: Course,
+  meta: {
+    icon: "el-icon-tickets"
+  }
 }, {
   path: '/friend',
   name: '好友组管理',
-  component: Friend
+  component: Friend,
+  meta: {
+    icon: "el-icon-date"
+  }
 }, {
   path: '/group',
   name: '小组排名',
-  component: Group
+  component: Group,
+  meta: {
+    icon: "el-icon-date"
+  }
 }, {
   path: '/integral',
   name: '积分管理',
-  component: Integral
+  component: Integral,
+  meta: {
+    icon: "el-icon-date"
+  }
 }, {
   path: '/topic',
   name: '题目管理',
-  component: Topic
+  component: Topic,
+  meta: {
+    icon: "el-icon-tickets"
+  }
 }, {
   path: '/test',
   name: '考核管理',
-  component: Test
-}, {
-  path: '/subject',
-  name: '课题管理',
-  component: Subject
-}, {
-  path: '/user',
-  name: '用户管理',
-  component: User
-}, {
-  path: '/study',
-  name: '学习管理',
-  component: Study
+  component: Test,
+  meta: {
+    icon: "el-icon-date"
+  }
 }]
+// }, {
+//   path: '/subject',
+//   name: '课题管理',
+//   component: Subject
+// }, {
+//   path: '/user',
+//   name: '用户管理',
+//   component: User
+// }, {
+//   path: '/study',
+//   name: '学习管理',
+//   component: Study
+// }, {
+//   path: '/login',
+//   name: '登录',
+//   component: Login
+// }]
 
 const router = new VueRouter({
   routes,
   mode: 'history'
+})
+
+let t = [{
+    path: "/subject",
+    name: "课题管理",
+    component: Subject,
+    meta: {
+      icon: "el-icon-date"
+    }
+  },
+  {
+    path: "/user",
+    name: "用户管理",
+    component: User,
+    meta: {
+      icon: "el-icon-date"
+    }
+  },
+  {
+    path: "/study",
+    name: "学习管理",
+    component: Study,
+    meta: {
+      icon: "el-icon-date"
+    }
+  },
+  {
+    path: "/login",
+    name: "登录",
+    component: Login,
+  },
+];
+
+//生成路由表
+router.addRoutes(t)
+router.options.routes.push(...t)
+//权限控制
+router.beforeEach((to, from, next) => {
+
+  next()
 })
 
 export default router

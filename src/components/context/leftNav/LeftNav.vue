@@ -17,7 +17,7 @@
     >
       <div v-for="(items, index) in myRoutes" :key="index">
         <el-menu-item v-if="isArray(items)" :index="items.path">
-          <i class="el-icon-menu"></i>
+          <i :class="items.meta.icon"></i>
           <span slot="title">{{ items.name }}</span>
         </el-menu-item>
         <el-submenu v-else :index="items.path">
@@ -55,15 +55,18 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
-      this.$route.path != key && this.$router.replace(key);
+      this.$route.path != key && this.$router.push(key);
     },
+
     isArray(data) {
       return !data.children;
     },
   },
   computed: {
     myRoutes() {
-      return this.$router.options.routes.filter((item) => item.path != "");
+      return this.$router.options.routes.filter(
+        (item) => item.path != "" && item.path != "/login"
+      );
     },
     nowPath() {
       return this.$route.path;

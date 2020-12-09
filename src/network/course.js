@@ -44,7 +44,6 @@ export function selectCourseById(id) {
 
 //增加目录
 export function appendCatalog(data) {
-  console.log(111)
   return request({
     url: `/course/addCata`,
     method: 'post',

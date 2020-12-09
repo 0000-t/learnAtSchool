@@ -57,16 +57,20 @@ export default {
       tableData: [],
       title: [
         {
-          label: "ID",
-          prop: "id",
+          label: "课程id",
+          prop: "courseId",
         },
         {
-          label: "名称",
-          prop: "name",
+          label: "学生id",
+          prop: "studentId",
         },
         {
-          label: "描述",
-          prop: "description",
+          label: "创建时间",
+          prop: "crateTime",
+        },
+        {
+          label: "持续时间",
+          prop: "duration",
         },
       ],
       row: {},
@@ -82,9 +86,10 @@ export default {
     //根据分页获取分类数据
     async studyByPageAndSize(page, size = 10) {
       const result = await getStudyByPageAndSize(page, size);
-      this.totalElements = result.data.totalElements;
-      this.tableData = result.data.content;
+      this.totalElements = result.data.total;
+      this.tableData = result.data.rows;
       this.page = page;
+      console.log(result);
     },
     //点击表格的"编辑"按钮
     handleEdit(e) {

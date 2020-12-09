@@ -5,7 +5,7 @@
         <LeftNav></LeftNav>
       </div>
       <div class="header" slot="header">
-        <slot name="header">header</slot>
+        <Header></Header>
       </div>
       <div class="main" slot="main">
         <slot name="main">main</slot>
@@ -20,13 +20,14 @@
 <script>
 import Frame from "components/common/frame/Frame";
 import LeftNav from "components/context/leftNav/LeftNav";
+import Header from "components/context/header/Header";
 
 export default {
   components: {
     Frame,
     LeftNav,
+    Header,
   },
-  methods: {},
 };
 </script>
 

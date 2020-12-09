@@ -69,7 +69,7 @@ export default {
           prop: "nickname",
         },
         {
-          label: "用户",
+          label: "用户名",
           prop: "username",
         },
         {

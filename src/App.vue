@@ -1,39 +1,54 @@
 <template>
   <div id="app">
-    <Home>
+    <Home v-show="isShow">
       <div slot="main" class="main">
         <router-view></router-view>
-        <!-- <Management>
-          <div slot="module">
-            <InputGroup></InputGroup>
-          </div>
-          <div slot="table">
-            <Table></Table>
-          </div>
-        </Management> -->
       </div>
     </Home>
+    <Login v-show="!isShow"></Login>
   </div>
 </template>
 
 <script>
 import Home from "views/home/Home";
-import Management from "components/context/management/Management";
-import Table from "components/common/table/Table";
-import InputGroup from "components/context/inputGroup/InputGroup";
+import Login from "views/login/Login";
 export default {
   name: "app",
   components: {
     Home,
-    Management,
-    Table,
-    InputGroup,
+    Login,
+  },
+  data() {
+    return {
+      isShow: true,
+    };
+  },
+  created() {
+    if (this.$route.path != "/") {
+      this.legalPath(this.$route);
+    }
+  },
+  watch: {
+    $route(to, from) {
+      this.legalPath(to);
+    },
+  },
+  methods: {
+    legalPath(to) {
+      let include = this.$router.options.routes.filter(
+        (item) => item.path == to.path && to.path != "/login"
+      );
+      this.isShow = !!include.length;
+      if (!this.isShow && to.path != "/login") {
+        this.$router.replace({ path: "/login" });
+      }
+    },
   },
 };
 </script>
 
 <style lang="less" scoped>
-@import url("assets/normalize.css");
+@import url("assets/css/normalize.css");
 
 #app {
   height: 100%;

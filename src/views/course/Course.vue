@@ -110,9 +110,6 @@ export default {
       totalElements: 0,
       categoryData: [],
       page: 1,
-      tao: {
-        name: "tao",
-      },
     };
   },
   created() {

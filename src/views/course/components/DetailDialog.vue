@@ -190,7 +190,6 @@ export default {
         }
       } else {
         //添加目录
-        console.log(this.$refs.file);
         let file = this.$refs.file.files[0];
         let formData = new FormData();
         formData.append("courseId", this.courseId);
