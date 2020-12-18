@@ -19,7 +19,7 @@ Vue.use(VueRouter)
 
 const routes = [{
   path: '',
-  redirect: '/category'
+  redirect: '/chart'
 }, {
   path: '/chart',
   name: '统计分析',
@@ -139,11 +139,11 @@ let t = [{
 ];
 
 //生成路由表
-router.addRoutes(t)
-router.options.routes.push(...t)
 //权限控制
 router.beforeEach((to, from, next) => {
-
+  console.log(to, from)
+  router.addRoutes(t)
+  router.options.routes.push(...t)
   next()
 })
 

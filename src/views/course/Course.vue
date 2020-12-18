@@ -119,10 +119,10 @@ export default {
     //根据分页获取课程数据
     async courseByPathAndSize(page, size = 10) {
       const result = await getCourseByPathAndSize(page, size);
+      console.log(result);
       this.totalElements = result.data.totalElements;
       this.page = page;
       //给表格数据添加上分类名称
-      console.log(result.data.content);
       if (result.data.content.length > 0) {
         //获取分类名称
         const categoryNames = await this.getCategoryNameById(

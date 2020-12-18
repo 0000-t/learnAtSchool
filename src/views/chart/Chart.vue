@@ -1,13 +1,76 @@
 <template>
-  <div class="tao-container">统计分析</div>
+  <div class="tao-container">
+    <TNTCharts :options="course"></TNTCharts>
+    <TNTCharts :options="study"></TNTCharts>
+  </div>
 </template>
 
 <script>
-export default {};
+import TNTCharts from "views/chart/component/TNTCharts";
+import { getCourseContextAnalysis, studentDuration } from "network/chart";
+
+export default {
+  components: {
+    TNTCharts,
+  },
+  data() {
+    return {
+      course: {},
+      study: {},
+    };
+  },
+  mounted() {
+    this.init();
+  },
+  methods: {
+    async init() {
+      let courseRes = await getCourseContextAnalysis();
+      let studentRes = await studentDuration();
+      this.mangerCourse(courseRes.data);
+      this.mangerStudyTimes(studentRes.data);
+      console.log(studentRes);
+    },
+
+    mangerCourse(data) {
+      this.course = {
+        title: "课程内容分析",
+        series: [
+          {
+            name: "时长",
+            type: "bar",
+            data: data.map((item) => item.duration),
+          },
+          {
+            name: "人数",
+            type: "bar",
+            data: data.map((item) => item.counts),
+          },
+        ],
+        legend: ["时长", "人数"],
+        xAxis: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+      };
+      console.log(this.course);
+    },
+
+    mangerStudyTimes(data) {
+      this.study = {
+        title: "学员时长分析",
+        series: [
+          {
+            name: "人数",
+            type: "bar",
+            data: data.map((item) => item.counts),
+          },
+        ],
+        xAxis: data.map((item) => item.intervalLevel),
+      };
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
 .tao-container {
-  background: red;
+  padding: 20px 20px 20px 0;
 }
 </style>

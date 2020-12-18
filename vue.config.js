@@ -14,5 +14,9 @@ module.exports = {
         'common': '@/common'
       }
     }
-  }
+  },
+  transpileDependencies: [
+    'vue-echarts',
+    'resize-detector'
+  ]
 }
