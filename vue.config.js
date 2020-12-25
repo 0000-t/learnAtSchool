@@ -20,5 +20,6 @@ module.exports = {
     'vue-echarts',
     'resize-detector'
   ],
-  publicPath: './'
+  publicPath: './',
+  assetsDir: 'static'
 }
