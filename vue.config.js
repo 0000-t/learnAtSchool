@@ -11,12 +11,14 @@ module.exports = {
         'network': '@/network',
         'router': '@/router',
         'element': '@/element',
-        'common': '@/common'
+        'common': '@/common',
+        'store': '@/store'
       }
     }
   },
   transpileDependencies: [
     'vue-echarts',
     'resize-detector'
-  ]
+  ],
+  publicPath: './'
 }

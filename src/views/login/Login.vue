@@ -60,15 +60,19 @@ export default {
 
     //登录
     async submit() {
-      // let result = await login()
-      setTimeout(async () => {
-        if (true) {
-          taoMessage("登录");
-          this.$router.replace({ path: "/" });
-        } else {
-          taoMessage("登录", "error");
-        }
-      }, 1000);
+      let result = await login({
+        phone: this.ruleForm.userId,
+        password: this.ruleForm.password,
+      });
+      if (result.flag) {
+        taoMessage("登录");
+        this.$emit("power", result.data);
+        console.log(result);
+        //跳转页面
+        this.$router.replace({ path: "/" });
+      } else {
+        taoMessage("登录", "error");
+      }
     },
 
     resetForm(formName) {

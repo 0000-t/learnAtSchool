@@ -3,7 +3,13 @@ import {
 } from './request.js'
 
 export function login(data) {
-  request({
-    url: ``,
+  return request({
+    url: `/user/webLogin`,
+    method: 'post',
+    // header: {
+    //   "accept": "*/*",
+    //   "Content-Type": "application/json"
+    // },
+    data
   })
 }

@@ -1,5 +1,9 @@
 <template>
-  <ECharts class="my-chart" :options="configuration"></ECharts>
+  <ECharts
+    :autoresize="true"
+    class="my-chart"
+    :options="configuration"
+  ></ECharts>
 </template>
 
 <script>
@@ -27,7 +31,7 @@ export default {
   computed: {
     configuration() {
       return {
-        color: this.options.color || ["#003366", "#006699"],
+        color: this.options.color || ["#409eff", "#006699"],
         title: {
           left: "center",
           text: this.options.title,

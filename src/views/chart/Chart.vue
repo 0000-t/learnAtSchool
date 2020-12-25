@@ -28,7 +28,8 @@ export default {
       let studentRes = await studentDuration();
       this.mangerCourse(courseRes.data);
       this.mangerStudyTimes(studentRes.data);
-      console.log(studentRes);
+      // console.log(studentRes);
+      // console.log(courseRes.data);
     },
 
     mangerCourse(data) {
@@ -47,7 +48,7 @@ export default {
           },
         ],
         legend: ["时长", "人数"],
-        xAxis: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+        xAxis: data.map((item) => item.title),
       };
       console.log(this.course);
     },

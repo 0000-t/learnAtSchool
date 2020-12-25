@@ -29,19 +29,27 @@
         :label="item.label"
         :prop="item.prop"
         :key="index"
+        :sortable="!!item.sort"
       >
       </el-table-column>
-      <el-table-column align="center" label="操作" width="200">
+      <el-table-column
+        v-if="showTool"
+        align="center"
+        label="操作"
+        :width="toolWidth"
+      >
         <template slot-scope="scope">
           <el-button
+            v-if="showEdit"
             type="primary"
             plain
             size="mini"
             @click="handleEdit(scope.$index, scope.row)"
           >
-            编辑
+            {{ editTxt }}
           </el-button>
           <el-button
+            v-if="showDelete"
             size="mini"
             type="danger"
             @click="handleDelete(scope.$index, scope.row)"
@@ -59,6 +67,7 @@
               layout="total, prev, pager, next, jumper"
               hide-on-single-page
               :current-page="page"
+              :page-size="pageSize"
               :total="total"
               @prev-click="lastPath"
               @next-click="nextPath"
@@ -92,6 +101,30 @@ export default {
     expand: {
       type: Boolean,
       default: false,
+    },
+    toolWidth: {
+      type: Number,
+      default: 200,
+    },
+    showTool: {
+      type: Boolean,
+      default: true,
+    },
+    showEdit: {
+      type: Boolean,
+      default: true,
+    },
+    showDelete: {
+      type: Boolean,
+      default: true,
+    },
+    editTxt: {
+      type: String,
+      default: "编辑",
+    },
+    pageSize: {
+      type: Number,
+      default: 10,
     },
   },
   data() {

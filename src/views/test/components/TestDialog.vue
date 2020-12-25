@@ -2,14 +2,14 @@
   <Dialog :isShow="isShow" @confirm="confirm" @cancel="cancel">
     <div slot="form">
       <el-form label-position="right" label-width="80px" :model="row">
-        <el-form-item label="id">
-          <el-input v-model="row.id" disabled></el-input>
+        <el-form-item label="学号">
+          <el-input v-model="row.studentId"></el-input>
         </el-form-item>
-        <el-form-item label="名称">
-          <el-input v-model="row.name"></el-input>
+        <el-form-item label="课程号">
+          <el-input v-model="row.courseId"></el-input>
         </el-form-item>
-        <el-form-item label="描述">
-          <el-input v-model="row.description"></el-input>
+        <el-form-item label="评分">
+          <el-input v-model="row.teacherScope"></el-input>
         </el-form-item>
       </el-form>
     </div>
@@ -31,9 +31,9 @@ export default {
       type: Object,
       default() {
         return {
-          id: "",
-          name: "",
-          description: "",
+          studentId: "",
+          courseId: "",
+          teacherScope: 0,
         };
       },
     },
@@ -52,5 +52,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+.el-select {
+  width: 380px;
+}
 </style>

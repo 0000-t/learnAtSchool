@@ -14,8 +14,7 @@
         TNT<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item command="a">黄金糕</el-dropdown-item>
-        <el-dropdown-item command="b">狮子头</el-dropdown-item>
+        <el-dropdown-item command="set">积分设置</el-dropdown-item>
         <el-dropdown-item command="logout" divided>退出</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -61,6 +60,8 @@ export default {
           .catch((cancel) => {
             //取消回调
           });
+      } else if (command === "set") {
+        this.$emit("setInfo");
       }
     },
   },

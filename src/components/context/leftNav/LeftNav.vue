@@ -17,10 +17,10 @@
     >
       <div v-for="(items, index) in myRoutes" :key="index">
         <el-menu-item v-if="isArray(items)" :index="items.path">
-          <i :class="items.meta.icon"></i>
+          <i :class="items.icon"></i>
           <span slot="title">{{ items.name }}</span>
         </el-menu-item>
-        <el-submenu v-else :index="items.path">
+        <!-- <el-submenu v-else :index="items.path">
           <template slot="title">
             <i class="el-icon-location"></i>
             <span>{{ items.name }}</span>
@@ -37,13 +37,14 @@
               </template>
             </router-link>
           </el-menu-item>
-        </el-submenu>
+        </el-submenu> -->
       </div>
     </el-menu>
   </div>
 </template>
 
 <script>
+import { routeSet } from "./data";
 export default {
   props: {
     routes: {
@@ -53,6 +54,7 @@ export default {
   data() {
     return {};
   },
+  create() {},
   methods: {
     handleSelect(key, keyPath) {
       this.$route.path != key && this.$router.push(key);
@@ -64,10 +66,9 @@ export default {
   },
   computed: {
     myRoutes() {
-      return this.$router.options.routes.filter(
-        (item) => item.path != "" && item.path != "/login"
-      );
+      return this.$store.getters.getRouteList;
     },
+
     nowPath() {
       return this.$route.path;
     },

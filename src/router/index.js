@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store'
 
 const Chart = () => import('views/chart/Chart')
 const Category = () => import('views/category/Category')
@@ -11,7 +12,7 @@ const Integral = () => import('views/integral/Integral')
 const Topic = () => import('views/topic/Topic')
 const Catalogue = () => import('views/catalogue/Catalogue')
 const Subject = () => import('views/subject/Subject')
-const User = () => import('views/user/User')
+const Role = () => import('views/role/Role')
 const Study = () => import('views/study/Study')
 const Login = () => import('views/login/Login')
 
@@ -25,126 +26,100 @@ const routes = [{
   name: '统计分析',
   component: Chart,
   meta: {
-    icon: "el-icon-date"
+    icon: "el-icon-date",
+    id: 'chart'
   }
 }, {
   path: '/category',
   name: '分类管理',
   component: Category,
   meta: {
-    icon: "el-icon-menu"
-  }
-}, {
-  path: '/catalogue',
-  name: '目录管理',
-  component: Catalogue,
-  meta: {
-    icon: "el-icon-date"
+    icon: "el-icon-menu",
+    id: 'category'
   }
 }, {
   path: '/course',
   name: '课程管理',
   component: Course,
   meta: {
-    icon: "el-icon-tickets"
+    icon: "el-icon-tickets",
+    id: 'course'
   }
 }, {
   path: '/friend',
   name: '好友组管理',
   component: Friend,
   meta: {
-    icon: "el-icon-date"
+    icon: "el-icon-date",
+    id: 'friend'
   }
 }, {
   path: '/group',
   name: '小组排名',
   component: Group,
   meta: {
-    icon: "el-icon-date"
-  }
-}, {
-  path: '/integral',
-  name: '积分管理',
-  component: Integral,
-  meta: {
-    icon: "el-icon-date"
-  }
-}, {
-  path: '/topic',
-  name: '题目管理',
-  component: Topic,
-  meta: {
-    icon: "el-icon-tickets"
+    icon: "el-icon-date",
+    id: 'group'
   }
 }, {
   path: '/test',
   name: '考核管理',
   component: Test,
   meta: {
-    icon: "el-icon-date"
+    icon: "el-icon-date",
+    id: 'test'
   }
+}, {
+  path: "/subject",
+  name: "课题管理",
+  component: Subject,
+  meta: {
+    icon: "el-icon-date",
+    id: 'subject'
+  }
+}, {
+  path: "/role",
+  name: "角色管理",
+  component: Role,
+  meta: {
+    icon: "el-icon-date",
+    id: 'role'
+  }
+}, {
+  path: "/login",
+  name: "登录",
+  component: Login,
 }]
-// }, {
-//   path: '/subject',
-//   name: '课题管理',
-//   component: Subject
-// }, {
-//   path: '/user',
-//   name: '用户管理',
-//   component: User
-// }, {
-//   path: '/study',
-//   name: '学习管理',
-//   component: Study
-// }, {
-//   path: '/login',
-//   name: '登录',
-//   component: Login
-// }]
 
 const router = new VueRouter({
   routes,
   mode: 'history'
 })
 
-let t = [{
-    path: "/subject",
-    name: "课题管理",
-    component: Subject,
-    meta: {
-      icon: "el-icon-date"
-    }
-  },
-  {
-    path: "/user",
-    name: "用户管理",
-    component: User,
-    meta: {
-      icon: "el-icon-date"
-    }
-  },
-  {
-    path: "/study",
-    name: "学习管理",
-    component: Study,
-    meta: {
-      icon: "el-icon-date"
-    }
-  },
-  {
-    path: "/login",
-    name: "登录",
-    component: Login,
-  },
-];
+function setStatus() {
+  if (sessionStorage.getItem("store")) {
+    store.replaceState(
+      Object.assign({},
+        store.state,
+        JSON.parse(sessionStorage.getItem("store"))
+      )
+    );
+  }
+}
 
-//生成路由表
-//权限控制
 router.beforeEach((to, from, next) => {
-  console.log(to, from)
-  router.addRoutes(t)
-  router.options.routes.push(...t)
-  next()
+  let power = store.getters.getPower;
+  if (!power.length) {
+    setStatus()
+    power = store.getters.getPower;
+  }
+  let path = to.path.split('/')[1]
+  if (to.path === "/" || power.indexOf(path) > -1) return next();
+  if (to.path === '/login') {
+    next();
+  } else {
+    next('/login');
+  }
 })
 
 export default router
