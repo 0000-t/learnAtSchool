@@ -55,6 +55,7 @@ export default {
         })
           .then(async (confirm) => {
             //确认回调
+            this.$store.commit("setIsLogin", { login: false });
             this.$router.replace({ path: "/login" });
           })
           .catch((cancel) => {

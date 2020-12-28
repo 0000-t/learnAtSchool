@@ -4,7 +4,6 @@
       <div slot="module">
         <InputGroup
           @append="append"
-          @appendCatelogue="appendCata"
           @search="search"
           @showAll="showAll"
         ></InputGroup>

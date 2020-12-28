@@ -9,7 +9,7 @@ const Friend = () => import('views/friend/Friend')
 const Group = () => import('views/group/Group')
 const Test = () => import('views/test/Test')
 const Integral = () => import('views/integral/Integral')
-const Topic = () => import('views/topic/Topic')
+const User = () => import('views/user/User')
 const Catalogue = () => import('views/catalogue/Catalogue')
 const Subject = () => import('views/subject/Subject')
 const Role = () => import('views/role/Role')
@@ -86,6 +86,22 @@ const routes = [{
     id: 'role'
   }
 }, {
+  path: "/integral",
+  name: "积分管理",
+  component: Integral,
+  meta: {
+    icon: "el-icon-date",
+    id: 'integral'
+  }
+}, {
+  path: "/user",
+  name: "用户管理",
+  component: User,
+  meta: {
+    icon: "el-icon-date",
+    id: 'user'
+  }
+}, {
   path: "/login",
   name: "登录",
   component: Login,
@@ -113,6 +129,7 @@ router.beforeEach((to, from, next) => {
     setStatus()
     power = store.getters.getPower;
   }
+  console.log(to, from)
   let path = to.path.split('/')[1]
   if (to.path === "/" || power.indexOf(path) > -1) return next();
   if (to.path === '/login') {

@@ -42,6 +42,13 @@ export function selectCourseById(id) {
   })
 }
 
+//获取全部课程
+export function getAllCourse() {
+  return request({
+    url: `/course`
+  })
+}
+
 //增加目录
 export function appendCatalog(data) {
   return request({

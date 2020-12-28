@@ -11,7 +11,7 @@
         <slot name="main">main</slot>
       </div>
       <div class="footer" slot="footer">
-        <slot name="footer">@TNT</slot>
+        <slot name="footer">@在线学习平台</slot>
       </div>
     </Frame>
     <Dialog

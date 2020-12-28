@@ -16,35 +16,22 @@
       active-text-color="#409EFF"
     >
       <div v-for="(items, index) in myRoutes" :key="index">
-        <el-menu-item v-if="isArray(items)" :index="items.path">
-          <i :class="items.icon"></i>
-          <span slot="title">{{ items.name }}</span>
-        </el-menu-item>
-        <!-- <el-submenu v-else :index="items.path">
+        <el-submenu v-if="!!items.data.length" :index="index + ''">
           <template slot="title">
             <i class="el-icon-location"></i>
             <span>{{ items.name }}</span>
           </template>
-          <el-menu-item
-            v-for="(item, index) in items.children"
-            :key="index"
-            :index="item.path"
-          >
-            <router-link :to="item.path">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span>{{ item.name }}</span>
-              </template>
-            </router-link>
-          </el-menu-item>
-        </el-submenu> -->
+          <el-menu-item-group v-for="(item, i) in items.data" :key="i">
+            <el-menu-item :index="item.path">{{ item.name }}</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
       </div>
     </el-menu>
   </div>
 </template>
 
 <script>
-import { routeSet } from "./data";
+import { routeSet, routeGroup } from "common/data";
 export default {
   props: {
     routes: {
@@ -52,21 +39,42 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      routeList: [
+        {
+          name: "权限管理",
+          data: [],
+        },
+        {
+          name: "课程管理",
+          data: [],
+        },
+        {
+          name: "统计分析",
+          data: [],
+        },
+        {
+          name: "基础设置",
+          data: [],
+        },
+      ],
+    };
   },
   create() {},
   methods: {
     handleSelect(key, keyPath) {
       this.$route.path != key && this.$router.push(key);
     },
-
-    isArray(data) {
-      return !data.children;
-    },
   },
+
   computed: {
     myRoutes() {
-      return this.$store.getters.getRouteList;
+      let routes = this.$store.getters.getRouteList;
+      routes.forEach((item) => {
+        this.routeList[routeGroup[item.id]].data.push(item);
+      });
+      console.log(this.routeList);
+      return this.routeList;
     },
 
     nowPath() {

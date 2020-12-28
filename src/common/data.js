@@ -39,4 +39,27 @@ export let routeSet = {
     icon: "el-icon-date",
     id: 'role'
   },
+  integral: {
+    name: "积分管理",
+    icon: "el-icon-date",
+    id: "integral"
+  },
+  user: {
+    name: "用户管理",
+    icon: "el-icon-date",
+    id: 'user'
+  }
+}
+
+export let routeGroup = {
+  role: 0, //角色
+  friend: 0,
+  user: 0, //用户
+  category: 1, //分类
+  course: 1, //课程
+  subject: 1, //课题
+  test: 1, //考核
+  group: 2, //小组
+  chart: 2, //分析
+  integral: 3, //积分
 }

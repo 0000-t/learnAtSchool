@@ -10,9 +10,6 @@
       <el-button type="primary" @click="append">添加课程</el-button>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="appendCatelogue">添加目录</el-button>
-    </el-form-item>
-    <el-form-item>
       <el-button type="primary" @click="showAll">显示全部</el-button>
     </el-form-item>
   </el-form>
@@ -32,9 +29,6 @@ export default {
     },
     append() {
       this.$emit("append");
-    },
-    appendCatelogue() {
-      this.$emit("appendCatelogue");
     },
     showAll() {
       this.formInline.id = "";

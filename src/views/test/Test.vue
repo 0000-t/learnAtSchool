@@ -37,6 +37,7 @@ import Table from "components/common/table/Table";
 import InputGroup from "views/test/components/InputGroup";
 import TestDialog from "views/test/components/TestDialog";
 import { MessageBox } from "element-ui";
+import { getAllCourse } from "network/course";
 import taoMessage from "common/message";
 
 import {
@@ -57,6 +58,8 @@ export default {
   data() {
     return {
       tableData: [],
+      courseData: {},
+      studentData: {},
       title: [
         {
           label: "ID",
@@ -97,15 +100,53 @@ export default {
   },
   created() {
     this.testByPathAndSize(1);
+    this.init(1);
   },
   methods: {
+    async init() {
+      let result = await Promise.all([
+        getTestByPathAndSize(1, 10),
+        getAllCourse(),
+      ]);
+      this.totalElements = result[0].data.totalElements;
+
+      this.processing(result[0].data.content, result[1].data);
+    },
+
     //根据分页获取分类数据
     async testByPathAndSize(page, size = 10) {
       const result = await getTestByPathAndSize(page, size);
-      this.totalElements = result.data.totalElements;
-      this.tableData = result.data.content;
       this.page = page;
+      this.totalElements = result.data.totalElements;
+
+      this.setTest(result.data.content);
     },
+
+    setTest(test) {
+      let course = this.courseData;
+      let student = this.studentData;
+      let courseTitle = null;
+
+      test.forEach((item) => {
+        courseTitle = course[item.courseId];
+        courseTitle && (item.title = courseTitle.title);
+      });
+
+      this.tableData = test;
+    },
+
+    processing(test, course, student) {
+      course.forEach((item) => {
+        this.courseData[item.id] = item.title;
+      });
+
+      this.courseData = course;
+      this.studentData = student;
+      console.log(course);
+
+      this.setTest(test);
+    },
+
     //点击表格的"编辑"按钮
     handleEdit(e) {
       this.row = { ...e.row, edit: true };

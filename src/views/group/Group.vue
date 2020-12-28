@@ -62,7 +62,7 @@ export default {
           prop: "userId",
         },
         {
-          label: "名称",
+          label: "学生名称",
           prop: "username",
         },
         {

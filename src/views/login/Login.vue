@@ -69,6 +69,7 @@ export default {
         this.$emit("power", result.data);
         console.log(result);
         //跳转页面
+        this.$store.commit("setIsLogin", { login: true });
         this.$router.replace({ path: "/" });
       } else {
         taoMessage("登录", "error");
