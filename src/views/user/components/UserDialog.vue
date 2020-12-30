@@ -9,7 +9,10 @@
           <el-input v-model="row.username"></el-input>
         </el-form-item>
         <el-form-item label="类型">
-          <el-input v-model="row.type"></el-input>
+          <el-select v-model="row.type" placeholder="请选择">
+            <el-option label="管理员" value="0"> </el-option>
+            <el-option label="老师" value="1"> </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="手机号">
           <el-input v-model="row.phone"></el-input>
@@ -54,5 +57,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+.el-select {
+  width: 380px;
+}
 </style>

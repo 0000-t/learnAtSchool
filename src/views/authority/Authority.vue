@@ -82,7 +82,6 @@ export default {
     //根据分页获取分类数据
     async authorityByPathAndSize(page, size = 10) {
       const result = await getAuthorityByPathAndSize(page, size);
-      console.log(result);
       this.totalElements = result.data.total;
       this.tableData = result.data.rows;
       this.page = page;
@@ -103,7 +102,6 @@ export default {
         .then(async (confirm) => {
           //确认回调
           let result = await deleteAuthorityById(e.row.id);
-          console.log(result, e.row.id);
           if (result.flag) {
             taoMessage("删除", "success");
             this.authorityByPathAndSize(1);
@@ -149,7 +147,6 @@ export default {
     //“查询”回调
     async search(e) {
       let result = await selectAuthorityById(e.id);
-      console.log(result);
       if (result.flag) {
         this.tableData = [result.data];
         this.totalElements = this.tableData.length;

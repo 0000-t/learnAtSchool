@@ -72,7 +72,6 @@ export default {
     //根据分页获取分类数据
     async categoryByPathAndSize(path, size = 10) {
       const result = await getCategoryByPathAndSize(path, size);
-      // console.log(result);
       this.tableData = result.data.content;
     },
     //点击表格的"编辑"按钮
@@ -114,7 +113,6 @@ export default {
     },
     //改变页码的回调
     currentPath(num) {
-      console.log(num);
     },
     //点击“添加”按钮
     append() {
@@ -123,7 +121,6 @@ export default {
     },
     //“查询”回调
     search(e) {
-      console.log(e);
     },
   },
   computed: {},

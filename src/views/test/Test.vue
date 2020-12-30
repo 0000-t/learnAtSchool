@@ -120,7 +120,6 @@ export default {
 
     async init(courseId) {
       let result = await Promise.all([getAllCourse(), getAllUser()]);
-      console.log(result);
 
       //设置课程名称和学生名称
       this.processing(result[0].data, result[1].data.student);
@@ -129,7 +128,6 @@ export default {
     //根据分页获取分类数据
     async testByPathAndSize(courseId, page, size = 10) {
       const result = await getTestByPathAndSize(page, size, courseId);
-      console.log(result);
       this.page = page;
       this.totalElements = result.data.totalElements;
 
@@ -144,7 +142,6 @@ export default {
 
     //合并课程学生数据
     setTest(test) {
-      console.log(test);
       let course = this.courseData;
       let student = this.studentData;
       let courseTitle = null;
@@ -204,7 +201,6 @@ export default {
         });
         if (result.flag) {
           let data = result.data;
-          console.log(data);
           this.setTest([
             {
               courseId: data.courseId,
@@ -224,7 +220,6 @@ export default {
     //“查询”回调
     async search(e) {
       let result = await selectTestById(e.id);
-      console.log(result);
       if (result.flag) {
         this.tableData = [result.data];
         this.totalElements = this.tableData.length;

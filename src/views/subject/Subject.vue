@@ -102,7 +102,6 @@ export default {
         .then(async (confirm) => {
           //确认回调
           let result = await deleteSubjectById(e.row.id);
-          console.log(result, e.row.id);
           if (result.flag) {
             taoMessage("删除", "success");
             this.subjectByPageAndSize(1);
@@ -148,9 +147,7 @@ export default {
     },
     //“查询”回调
     async search(e) {
-      console.log(e.id);
       let result = await selectSubjectById(e.id);
-      console.log(result);
       if (result.flag) {
         this.tableData = [result.data];
         this.totalElements = this.tableData.length;

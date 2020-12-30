@@ -1,6 +1,6 @@
 <template>
   <el-form :inline="true" :model="formInline" class="demo-form-inline">
-    <el-form-item label="选课课程">
+    <el-form-item label="选择课程">
       <el-select v-model="selected" placeholder="请选择" @change="selectCourse">
         <el-option
           v-for="item in courseList"

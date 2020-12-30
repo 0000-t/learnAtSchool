@@ -78,6 +78,10 @@ export default {
           prop: "nickname",
         },
         {
+          label: "类型",
+          prop: "type",
+        },
+        {
           label: "手机号",
           prop: "phone",
         },
@@ -107,18 +111,18 @@ export default {
     async getRole() {
       let result = await getAllRole();
       this.role = result.data;
-      console.log(this.role);
     },
 
     async allUser() {
       let result = await getAllUser();
-      console.log(result);
       this.tableData = [...result.data.student, ...result.data.teacher];
+      this.tableData.forEach((item) => {
+        item.type = item.type == 0 ? "管理员" : "老师";
+      });
     },
 
     //点击表格的"编辑"按钮
     handleEdit(e) {
-      console.log(e);
       this.row = {
         username: e.row.username,
         id: e.row.id,
@@ -138,7 +142,6 @@ export default {
         .then(async (confirm) => {
           //确认回调
           let result = await deleteUserById(e.row.id);
-          console.log(result, e.row.id);
           if (result.flag) {
             taoMessage("删除", "success");
             this.allUser(1);
@@ -168,8 +171,11 @@ export default {
       } else {
         //添加分类
         let result = await appendUser({
-          name: e.name,
-          description: e.description,
+          nickname: e.nickname,
+          passwork: e.passwork,
+          phone: e.phone,
+          type: e.type,
+          username: e.username,
         });
         if (result.flag) {
           taoMessage("添加", "success");
@@ -179,10 +185,10 @@ export default {
         }
       }
     },
+
     //“查询”回调
     async search(e) {
       let result = await selectUserById(e.id);
-      console.log(result);
       if (result.flag) {
         this.tableData = [result.data];
         this.totalElements = this.tableData.length;

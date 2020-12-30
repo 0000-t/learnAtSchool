@@ -138,7 +138,6 @@ router.beforeEach((to, from, next) => {
     setStatus()
     power = store.getters.getPower;
   }
-  console.log(power)
   let path = to.path.split('/')[1]
   if (to.path === "/" || power.indexOf(path) > -1) return next();
   if (to.path === '/login') {

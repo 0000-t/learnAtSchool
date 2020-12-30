@@ -47,8 +47,9 @@ export function appendRoleToUser(data) {
 
 //添加用户信息
 export function appendUser(data) {
+  let url = data.type == 0 ? "/user/addAdmin" : "/user/addTeacher";
   return request({
-    url: '/user',
+    url,
     method: 'post',
     data
   })

@@ -113,7 +113,6 @@ export default {
     //根据分页获取分类数据
     async groupByPathAndSize() {
       const result = await getGroupByPathAndSize();
-      console.log(result);
       this.totalElements = result.data ? result.data.length : 0;
       this.allData = result.data;
       !!this.totalElements && this.setPath(1);
@@ -146,7 +145,6 @@ export default {
         .then(async (confirm) => {
           //确认回调
           let result = await deleteGroupById(e.row.id);
-          console.log(result, e.row.id);
           if (result.flag) {
             taoMessage("删除", "success");
             this.groupByPathAndSize(1);
@@ -191,7 +189,6 @@ export default {
     //“查询”回调
     async search(e) {
       let result = await selectGroupById(e.id);
-      console.log(result);
       if (result.flag) {
         this.tableData = [result.data];
         this.totalElements = this.tableData.length;

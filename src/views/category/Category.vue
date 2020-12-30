@@ -57,10 +57,6 @@ export default {
       tableData: [],
       title: [
         {
-          label: "ID",
-          prop: "id",
-        },
-        {
           label: "名称",
           prop: "name",
         },
@@ -102,7 +98,6 @@ export default {
         .then(async (confirm) => {
           //确认回调
           let result = await deleteCategoryById(e.row.id);
-          console.log(result, e.row.id);
           if (result.flag) {
             taoMessage("删除", "success");
             this.categoryByPathAndSize(1);
@@ -147,7 +142,6 @@ export default {
     //“查询”回调
     async search(e) {
       let result = await selectCategoryById(e.id);
-      console.log(result);
       if (result.flag) {
         this.tableData = [result.data];
         this.totalElements = this.tableData.length;

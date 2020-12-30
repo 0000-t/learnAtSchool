@@ -68,7 +68,6 @@ export default {
         description: this.row.description,
         value: this.row.score,
       });
-      console.log(result);
       this.closeDialog();
     },
     cancel() {

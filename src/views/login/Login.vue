@@ -52,7 +52,6 @@ export default {
         if (valid) {
           this.submit();
         } else {
-          console.log("error submit!!");
           return false;
         }
       });

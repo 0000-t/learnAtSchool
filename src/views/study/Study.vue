@@ -89,7 +89,6 @@ export default {
       this.totalElements = result.data.total;
       this.tableData = result.data.rows;
       this.page = page;
-      console.log(result);
     },
     //点击表格的"编辑"按钮
     handleEdit(e) {
@@ -107,7 +106,6 @@ export default {
         .then(async (confirm) => {
           //确认回调
           let result = await deleteStudyById(e.row.id);
-          console.log(result, e.row.id);
           if (result.flag) {
             taoMessage("删除", "success");
             this.studyByPageAndSize(1);
@@ -152,7 +150,6 @@ export default {
     //“查询”回调
     async search(e) {
       let result = await selectStudyById(e.id);
-      console.log(result);
       if (result.flag) {
         this.tableData = [result.data];
         this.totalElements = this.tableData.length;

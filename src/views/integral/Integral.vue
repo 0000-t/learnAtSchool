@@ -33,7 +33,6 @@ export default {
         description: this.row.description,
         value: this.row.score,
       });
-      console.log(result);
       if (result.flag) {
         taoMessage("设置");
       } else {

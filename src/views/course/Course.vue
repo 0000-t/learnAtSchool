@@ -118,7 +118,6 @@ export default {
     //根据分页获取课程数据
     async courseByPathAndSize(page, size = 10) {
       const result = await getCourseByPathAndSize(page, size);
-      console.log(result);
       this.totalElements = result.data.totalElements;
       this.page = page;
       //给表格数据添加上分类名称
@@ -156,7 +155,6 @@ export default {
         .then(async (confirm) => {
           //确认回调
           let result = await deleteCourseById(e.row.id);
-          console.log(result);
           if (result.flag) {
             this.courseByPathAndSize(1);
             taoMessage("删除");
@@ -260,7 +258,6 @@ export default {
     async getCategoryNameById(ids) {
       const result = (await getAllCategory()).data;
       this.categoryData = [...result];
-      // console.log(ids, result);
       return ids
         .map((item) => item.categoryId) //筛选出课程id
         .filter((item, index, arr) => arr.indexOf(item, 0) === index) //课程id去重
