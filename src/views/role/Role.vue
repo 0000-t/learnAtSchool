@@ -21,6 +21,7 @@
       </div>
     </Management>
     <RoleDialog
+      ref="roleDialog"
       :isShow="isShow"
       :row="row"
       @confirm="confirm"
@@ -43,7 +44,10 @@ import {
   updateRoleById,
   appendRole,
   selectRoleById,
+  setRoleByUser,
+  getUserRoleById,
 } from "network/role";
+import { getAllAuthority } from "network/authority";
 
 export default {
   components: {
@@ -57,10 +61,6 @@ export default {
       tableData: [],
       title: [
         {
-          label: "ID",
-          prop: "id",
-        },
-        {
           label: "名称",
           prop: "name",
         },
@@ -69,14 +69,17 @@ export default {
           prop: "description",
         },
       ],
+      role: [],
       row: {},
       isShow: false,
       totalElements: 0,
       page: 1,
+      checked: [],
     };
   },
   created() {
     this.roleByPageAndSize(1);
+    this.getRole();
   },
   methods: {
     //根据分页获取分类数据
@@ -87,11 +90,30 @@ export default {
       this.tableData = result.data.rows;
       this.page = page;
     },
+
+    async getRole() {
+      let result = await getAllAuthority();
+      this.role = result.data;
+      console.log(this.role);
+    },
+
     //点击表格的"编辑"按钮
     handleEdit(e) {
-      this.row = { ...e.row, edit: true };
+      this.getUserRole(e.row.id);
+      this.row = {
+        ...e.row,
+        role: this.role,
+        edit: true,
+      };
       this.isShow = true;
     },
+
+    async getUserRole(id) {
+      let result = await getUserRoleById(id);
+      this.checked = result.data;
+      this.$refs["roleDialog"].checked = result.data;
+    },
+
     //点击表格的"删除"按钮
     handleDelete(e) {
       MessageBox.confirm("您确定删除这一行吗?", "提示", {
@@ -120,13 +142,18 @@ export default {
       this.closeDialog();
       //判断是编辑还是增加操作
       if (e.edit) {
-        let result = await updateRoleById({
-          id: e.id,
-          name: e.name,
-          description: e.description,
-        });
-        console.log(result);
-        if (result.flag) {
+        let result = await Promise.all([
+          setRoleByUser({
+            roleId: e.id,
+            rightIds: e.role.join(","),
+          }),
+          updateRoleById({
+            id: e.id,
+            name: e.name,
+            description: e.description,
+          }),
+        ]);
+        if (result[0].flag && result[1].flag) {
           taoMessage("修改", "success");
           this.roleByPageAndSize(1);
         } else {
@@ -162,6 +189,7 @@ export default {
     },
     //弹窗点击“取消”按钮
     cancel() {
+      this.checked = [];
       this.closeDialog();
     },
     //关闭弹窗

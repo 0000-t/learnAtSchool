@@ -3,9 +3,9 @@ import {
 } from './request.js'
 
 //根据页码获取分类信息
-export function getTestByPathAndSize(page, size = 10) {
+export function getTestByPathAndSize(page, size = 10, courseId) {
   return request({
-    url: `/learnrecord/findAllPage/${page}/${size}`
+    url: `course/getUserCourseByCourse/${page}/${size}?courseId=${courseId}`
   })
 }
 
@@ -46,9 +46,25 @@ export function selectTestById(id) {
   })
 }
 
+export function getCourseByTeacherId(id) {
+  return request({
+    url: `/course/getCourseByTeacher?teacherId=${id}`,
+  })
+}
+
 //获取全部分类
 export function getAllTest() {
   return request({
     url: `/test`
+  })
+}
+
+export function getInfoByStudentAndCourse(data) {
+  let {
+    courseId,
+    studentId
+  } = data;
+  return request({
+    url: `/learnrecord/userCourseLearnRecord/${studentId}/${courseId}`
   })
 }

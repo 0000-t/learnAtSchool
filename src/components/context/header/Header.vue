@@ -11,11 +11,11 @@
   <div class="el-menu-demo">
     <el-dropdown @command="handleCommand">
       <span class="el-dropdown-link">
-        TNT<i class="el-icon-arrow-down el-icon--right"></i>
+        {{ userInfo }}<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item command="set">积分设置</el-dropdown-item>
-        <el-dropdown-item command="logout" divided>退出</el-dropdown-item>
+        <!-- <el-dropdown-item command="set" divided>积分设置</el-dropdown-item> -->
+        <el-dropdown-item command="logout">退出</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
   </div>
@@ -64,6 +64,12 @@ export default {
       } else if (command === "set") {
         this.$emit("setInfo");
       }
+    },
+  },
+  computed: {
+    userInfo() {
+      let user = this.$store.getters.getUserId;
+      return user.id + "-" + user.username;
     },
   },
 };

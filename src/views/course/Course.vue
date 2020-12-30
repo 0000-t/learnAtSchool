@@ -74,7 +74,7 @@ export default {
       tableData: [],
       title: [
         {
-          label: "ID",
+          label: "课程号",
           prop: "id",
         },
         {

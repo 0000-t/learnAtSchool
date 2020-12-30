@@ -20,7 +20,7 @@ export function deleteRoleById(id) {
 //根据id修改用户
 export function updateRoleById(data) {
   return request({
-    url: `/role/${data.id}`,
+    url: `/role`,
     method: 'put',
     data
   })
@@ -46,5 +46,24 @@ export function selectRoleById(id) {
 export function getAllRole() {
   return request({
     url: `/role`
+  })
+}
+
+//获取用户的权限
+export function getUserRoleById(id) {
+  return request({
+    url: `/authority/getRoleAuthority?roleId=${id}`,
+  })
+}
+
+//设置用户的权限
+export function setRoleByUser(data) {
+  let {
+    rightIds,
+    roleId
+  } = data
+  return request({
+    url: `/authority/giveRight2Role?rightIds=${rightIds}&roleId=${roleId}`,
+    method: 'post',
   })
 }

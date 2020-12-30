@@ -8,6 +8,7 @@ const state = {
   isLogin: false,
   power: [],
   routeList: [],
+  userId: {}
 }
 
 const store = new Vuex.Store({
@@ -24,6 +25,9 @@ const store = new Vuex.Store({
     },
     getRouteList(state) {
       return state.routeList
+    },
+    getUserId(state) {
+      return state.userId
     }
   },
   mutations: {
@@ -39,6 +43,9 @@ const store = new Vuex.Store({
     setRouteList(state, payload) {
       state.routeList = payload.routeList
     },
+    setUserId(state, payload) {
+      state.userId = payload.userId
+    }
   }
 })
 

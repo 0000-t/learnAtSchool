@@ -2,16 +2,10 @@
   <Dialog :isShow="isShow" @confirm="confirm" @cancel="cancel">
     <div slot="form">
       <el-form label-position="right" label-width="80px" :model="row">
-        <!-- <el-form-item label="id">
-          <el-input disabled v-model="row.id"></el-input>
-        </el-form-item> -->
-        <el-form-item label="名称">
-          <el-input v-model="row.name"></el-input>
+        <el-form-item label="名字">
+          <el-input v-model="row.username"></el-input>
         </el-form-item>
-        <el-form-item label="描述">
-          <el-input v-model="row.description"></el-input>
-        </el-form-item>
-        <el-form-item v-if="row.role" label="权限">
+        <el-form-item label="权限">
           <el-checkbox-group
             v-model="checked"
             @change="handleCheckedCitiesChange"
@@ -56,13 +50,12 @@ export default {
   methods: {
     confirm() {
       this.$emit("confirm", {
-        ...this.row,
-        role: [...this.checked],
+        id: this.row.id,
+        role: this.checked,
+        edit: this.row.edit,
       });
-      this.checked = [];
     },
     cancel() {
-      this.checked = [];
       this.$emit("cancel");
     },
     handleCheckAllChange(val) {
@@ -70,12 +63,6 @@ export default {
     },
     handleCheckedCitiesChange(value) {
       console.log(value);
-    },
-  },
-  computed: {
-    getChecked() {
-      console.log(this.checked);
-      return this.checked;
     },
   },
 };

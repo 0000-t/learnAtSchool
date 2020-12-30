@@ -5,7 +5,7 @@ import store from '../store'
 const Chart = () => import('views/chart/Chart')
 const Category = () => import('views/category/Category')
 const Course = () => import('views/course/Course')
-const Friend = () => import('views/friend/Friend')
+const Authority = () => import('views/authority/Authority')
 const Group = () => import('views/group/Group')
 const Test = () => import('views/test/Test')
 const Integral = () => import('views/integral/Integral')
@@ -46,12 +46,12 @@ const routes = [{
     id: 'course'
   }
 }, {
-  path: '/friend',
-  name: '好友组管理',
-  component: Friend,
+  path: '/authority',
+  name: '权限管理',
+  component: Authority,
   meta: {
     icon: "el-icon-date",
-    id: 'friend'
+    id: 'authority'
   }
 }, {
   path: '/group',
@@ -123,16 +123,27 @@ function setStatus() {
   }
 }
 
+function emptyState() {
+  store.commit('setRouteList', {
+    routeList: []
+  })
+  store.commit('setPower', {
+    power: []
+  })
+}
+
 router.beforeEach((to, from, next) => {
   let power = store.getters.getPower;
   if (!power.length) {
     setStatus()
     power = store.getters.getPower;
   }
-  console.log(to, from)
+  console.log(power)
   let path = to.path.split('/')[1]
   if (to.path === "/" || power.indexOf(path) > -1) return next();
   if (to.path === '/login') {
+    sessionStorage.removeItem("store");
+    emptyState()
     next();
   } else {
     next('/login');

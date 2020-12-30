@@ -1,13 +1,15 @@
 <template>
   <div class="test">
     <Management>
-      <!-- <div slot="module">
+      <div slot="module">
         <InputGroup
+          :courseList="courseList"
+          @selected="selected"
           @append="append"
           @search="search"
           @showAll="showAll"
         ></InputGroup>
-      </div> -->
+      </div>
       <div class="slotTable" slot="table">
         <Table
           :tableData="tableData"
@@ -46,13 +48,16 @@ import {
   updateTestById,
   appendTest,
   selectTestById,
+  getCourseByTeacherId,
+  getInfoByStudentAndCourse,
 } from "network/test";
+import { getAllUser } from "network/user";
 
 export default {
   components: {
     Management,
     Table,
-    // InputGroup,
+    InputGroup,
     TestDialog,
   },
   data() {
@@ -61,10 +66,6 @@ export default {
       courseData: {},
       studentData: {},
       title: [
-        {
-          label: "ID",
-          prop: "id",
-        },
         {
           label: "课程号",
           prop: "courseId",
@@ -75,7 +76,7 @@ export default {
         },
         {
           label: "学号",
-          prop: "studentId",
+          prop: "userId",
         },
         {
           label: "呢称",
@@ -91,60 +92,83 @@ export default {
           prop: "duration",
           sort: true,
         },
+        {
+          label: "老师评分",
+          prop: "teacherScope",
+          sort: true,
+        },
       ],
+      courseList: [],
       row: {},
       isShow: false,
       totalElements: 0,
       page: 1,
+      teacherId: "",
+      courseId: "",
     };
   },
   created() {
-    this.testByPathAndSize(1);
-    this.init(1);
+    this.teacherId = this.$store.getters.getUserId.id;
+    this.getTeacherCourse(this.teacherId);
+    this.init();
   },
   methods: {
-    async init() {
-      let result = await Promise.all([
-        getTestByPathAndSize(1, 10),
-        getAllCourse(),
-      ]);
-      this.totalElements = result[0].data.totalElements;
+    async getTeacherCourse(id) {
+      let result = await getCourseByTeacherId(id);
+      this.courseList = result.data;
+    },
 
-      this.processing(result[0].data.content, result[1].data);
+    async init(courseId) {
+      let result = await Promise.all([getAllCourse(), getAllUser()]);
+      console.log(result);
+
+      //设置课程名称和学生名称
+      this.processing(result[0].data, result[1].data.student);
     },
 
     //根据分页获取分类数据
-    async testByPathAndSize(page, size = 10) {
-      const result = await getTestByPathAndSize(page, size);
+    async testByPathAndSize(courseId, page, size = 10) {
+      const result = await getTestByPathAndSize(page, size, courseId);
+      console.log(result);
       this.page = page;
       this.totalElements = result.data.totalElements;
 
       this.setTest(result.data.content);
     },
 
+    //获取选择的课程
+    selected(value) {
+      this.courseId = value;
+      this.testByPathAndSize(value, 1);
+    },
+
+    //合并课程学生数据
     setTest(test) {
+      console.log(test);
       let course = this.courseData;
       let student = this.studentData;
       let courseTitle = null;
+      let userName = null;
 
       test.forEach((item) => {
         courseTitle = course[item.courseId];
-        courseTitle && (item.title = courseTitle.title);
+        userName = student[item.userId];
+
+        courseTitle && (item.title = courseTitle);
+        userName && (item.nickName = userName);
       });
 
       this.tableData = test;
     },
 
-    processing(test, course, student) {
+    processing(course, student) {
       course.forEach((item) => {
         this.courseData[item.id] = item.title;
       });
 
-      this.courseData = course;
-      this.studentData = student;
-      console.log(course);
-
-      this.setTest(test);
+      student.forEach((item) => {
+        this.studentData[item.id] = item.username;
+      });
     },
 
     //点击表格的"编辑"按钮
@@ -152,29 +176,6 @@ export default {
       this.row = { ...e.row, edit: true };
       this.isShow = true;
     },
-    //点击表格的"删除"按钮
-    // handleDelete(e) {
-    //   MessageBox.confirm("您确定删除这一行吗?", "提示", {
-    //     confirmButtonText: "确定",
-    //     cancelButtonText: "取消",
-    //     type: "warning",
-    //     center: true,
-    //   })
-    //     .then(async (confirm) => {
-    //       //确认回调
-    //       let result = await deleteTestById(e.row.id);
-    //       console.log(result, e.row.id);
-    //       if (result.flag) {
-    //         taoMessage("删除", "success");
-    //         this.testByPathAndSize(1);
-    //       } else {
-    //         taoMessage("删除", "error");
-    //       }
-    //     })
-    //     .catch((cancel) => {
-    //       //取消回调
-    //     });
-    // },
 
     /**
      * 弹窗点击“确认”按钮
@@ -185,15 +186,38 @@ export default {
       if (e.edit) {
         let result = await updateTestById({
           courseId: e.courseId,
-          userId: +e.studentId,
+          userId: +e.userId,
           scope: +e.teacherScope,
         });
-        console.log(result);
         if (result.flag) {
           taoMessage("修改", "success");
-          this.testByPathAndSize(1);
+          this.testByPathAndSize(this.courseId, 1);
         } else {
           taoMessage("修改", "error");
+        }
+      } else {
+        let result = await getInfoByStudentAndCourse({
+          // courseId: e.courseId,
+          // studentId: e.userId,
+          courseId: 1340334252606804000,
+          studentId: 136531351,
+        });
+        if (result.flag) {
+          let data = result.data;
+          console.log(data);
+          this.setTest([
+            {
+              courseId: data.courseId,
+              duration: data.duration,
+              nickName: data.nickName,
+              scope: data.scope,
+              teacherScope: "",
+              title: data.title,
+              userId: data.studentId,
+            },
+          ]);
+        } else {
+          taoMessage("查询", "error");
         }
       }
     },
@@ -219,7 +243,7 @@ export default {
     },
     //改变页码的回调
     currentPath(num) {
-      this.testByPathAndSize(num);
+      this.testByPathAndSize(this.courseId, num);
     },
     //点击“添加”按钮
     append() {
@@ -228,7 +252,7 @@ export default {
     },
     //点击“显示”全部按钮
     showAll() {
-      this.testByPathAndSize(1);
+      this.testByPathAndSize(this.courseId, 1);
     },
   },
   computed: {},

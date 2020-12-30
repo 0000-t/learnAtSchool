@@ -66,11 +66,12 @@ export default {
       });
       if (result.flag) {
         taoMessage("登录");
-        this.$emit("power", result.data);
-        console.log(result);
+        this.$emit("power", result.data.authoritys);
         //跳转页面
         this.$store.commit("setIsLogin", { login: true });
-        this.$router.replace({ path: "/" });
+        this.$store.commit("setUserId", { userId: result.data.user });
+        let p = result.data.authoritys[0];
+        this.$router.replace({ path: `/${p}` });
       } else {
         taoMessage("登录", "error");
       }

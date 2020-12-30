@@ -1,5 +1,5 @@
 <template>
-  <div class="user">
+  <div class="authority">
     <Management>
       <div slot="module">
         <InputGroup
@@ -14,118 +14,83 @@
           :title="title"
           :total="totalElements"
           :page="page"
-          editTxt="设置角色"
-          :toolWidth="220"
           @edit="handleEdit"
           @delete="handleDelete"
           @current="currentPath"
         ></Table>
       </div>
     </Management>
-    <UserDialog
+    <AuthorityDialog
       :isShow="isShow"
       :row="row"
       @confirm="confirm"
       @cancel="cancel"
-    ></UserDialog>
-    <SetRoleDialog
-      :isShow="isShowSet"
-      :row="row"
-      @confirm="confirm"
-      @cancel="cancel"
-    ></SetRoleDialog>
+    ></AuthorityDialog>
   </div>
 </template>
 
 <script>
 import Management from "components/context/management/Management";
 import Table from "components/common/table/Table";
-import InputGroup from "views/user/components/InputGroup";
-import UserDialog from "views/user/components/UserDialog";
-import SetRoleDialog from "views/user/components/SetRoleDialog";
+import InputGroup from "views/authority/components/InputGroup";
+import AuthorityDialog from "views/authority/components/AuthorityDialog";
 import { MessageBox } from "element-ui";
 import taoMessage from "common/message";
 
 import {
-  getUserByPathAndSize,
-  deleteUserById,
-  updateUserById,
-  appendUser,
-  selectUserById,
-  getAllUser,
-  appendRoleToUser,
-} from "network/user";
-import { getAllRole } from "network/role";
+  getAuthorityByPathAndSize,
+  deleteAuthorityById,
+  updateAuthorityById,
+  appendAuthority,
+  selectAuthorityById,
+} from "network/authority";
 
 export default {
   components: {
     Management,
     Table,
     InputGroup,
-    UserDialog,
-    SetRoleDialog,
+    AuthorityDialog,
   },
   data() {
     return {
       tableData: [],
       title: [
         {
-          label: "名字",
-          prop: "username",
+          label: "权限id",
+          prop: "id",
         },
         {
-          label: "昵称",
-          prop: "nickname",
+          label: "权限名称",
+          prop: "name",
         },
         {
-          label: "手机号",
-          prop: "phone",
+          label: "描述",
+          prop: "description",
         },
       ],
-      role: [],
       row: {},
       isShow: false,
-      isShowSet: false,
       totalElements: 0,
       page: 1,
     };
   },
   created() {
-    // this.userByPathAndSize(1);
-    this.allUser();
-    this.getRole();
+    this.authorityByPathAndSize(1);
   },
   methods: {
     //根据分页获取分类数据
-    async userByPathAndSize(page, size = 10) {
-      const result = await getUserByPathAndSize(page, size);
-      this.totalElements = result.data.totalElements;
-      this.tableData = result.data.content;
+    async authorityByPathAndSize(page, size = 10) {
+      const result = await getAuthorityByPathAndSize(page, size);
+      console.log(result);
+      this.totalElements = result.data.total;
+      this.tableData = result.data.rows;
       this.page = page;
     },
-
-    async getRole() {
-      let result = await getAllRole();
-      this.role = result.data;
-      console.log(this.role);
-    },
-
-    async allUser() {
-      let result = await getAllUser();
-      console.log(result);
-      this.tableData = [...result.data.student, ...result.data.teacher];
-    },
-
     //点击表格的"编辑"按钮
     handleEdit(e) {
-      console.log(e);
-      this.row = {
-        username: e.row.username,
-        id: e.row.id,
-        role: this.role,
-        edit: true,
-      };
-      this.isShowSet = true;
+      this.row = { ...e.row, edit: true };
+      this.isShow = true;
     },
     //点击表格的"删除"按钮
     handleDelete(e) {
@@ -137,11 +102,11 @@ export default {
       })
         .then(async (confirm) => {
           //确认回调
-          let result = await deleteUserById(e.row.id);
+          let result = await deleteAuthorityById(e.row.id);
           console.log(result, e.row.id);
           if (result.flag) {
             taoMessage("删除", "success");
-            this.allUser(1);
+            this.authorityByPathAndSize(1);
           } else {
             taoMessage("删除", "error");
           }
@@ -155,25 +120,27 @@ export default {
       this.closeDialog();
       //判断是编辑还是增加操作
       if (e.edit) {
-        let result = await appendRoleToUser({
-          userId: e.id,
-          roleIds: e.role,
+        let result = await updateAuthorityById({
+          id: e.id,
+          name: e.name,
+          description: e.description,
         });
         if (result.flag) {
-          taoMessage("角色赋予", "success");
-          this.allUser(1);
+          taoMessage("修改", "success");
+          this.authorityByPathAndSize(1);
         } else {
-          taoMessage("角色赋予", "error");
+          taoMessage("修改", "error");
         }
       } else {
         //添加分类
-        let result = await appendUser({
+        let result = await appendAuthority({
+          id: "",
           name: e.name,
           description: e.description,
         });
         if (result.flag) {
           taoMessage("添加", "success");
-          this.allUser(1);
+          this.authorityByPathAndSize(1);
         } else {
           taoMessage("添加", "error");
         }
@@ -181,7 +148,7 @@ export default {
     },
     //“查询”回调
     async search(e) {
-      let result = await selectUserById(e.id);
+      let result = await selectAuthorityById(e.id);
       console.log(result);
       if (result.flag) {
         this.tableData = [result.data];
@@ -197,12 +164,11 @@ export default {
     },
     //关闭弹窗
     closeDialog() {
-      this.isShowSet = false;
       this.isShow = false;
     },
     //改变页码的回调
     currentPath(num) {
-      this.allUser(num);
+      this.authorityByPathAndSize(num);
     },
     //点击“添加”按钮
     append() {
@@ -211,7 +177,7 @@ export default {
     },
     //点击“显示”全部按钮
     showAll() {
-      this.userByPathAndSize(1);
+      this.authorityByPathAndSize(1);
     },
   },
   computed: {},
@@ -219,7 +185,7 @@ export default {
 </script>
 
 <style lang="less" scpoed>
-.user {
+.authority {
   height: 100%;
   .slotTable {
     height: 100%;

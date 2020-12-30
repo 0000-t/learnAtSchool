@@ -14,10 +14,10 @@ export let routeSet = {
     icon: "el-icon-tickets",
     id: 'course'
   },
-  friend: {
-    name: '好友组管理',
+  authority: {
+    name: '权限管理',
     icon: "el-icon-date",
-    id: 'friend'
+    id: 'authority'
   },
   group: {
     name: '小组排名',
@@ -53,7 +53,7 @@ export let routeSet = {
 
 export let routeGroup = {
   role: 0, //角色
-  friend: 0,
+  authority: 0, //权限管理
   user: 0, //用户
   category: 1, //分类
   course: 1, //课程

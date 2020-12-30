@@ -57,10 +57,6 @@ export default {
       tableData: [],
       title: [
         {
-          label: "ID",
-          prop: "id",
-        },
-        {
           label: "标题",
           prop: "title",
         },

@@ -60,6 +60,16 @@ export default {
       ],
     };
   },
+  watch: {
+    $route(to, from) {
+      if (to.path === "/login") {
+        this.routeList.forEach((item) => {
+          item.data = [];
+        });
+        console.log(this.routeList);
+      }
+    },
+  },
   create() {},
   methods: {
     handleSelect(key, keyPath) {
@@ -70,10 +80,10 @@ export default {
   computed: {
     myRoutes() {
       let routes = this.$store.getters.getRouteList;
+      console.log(routes);
       routes.forEach((item) => {
         this.routeList[routeGroup[item.id]].data.push(item);
       });
-      console.log(this.routeList);
       return this.routeList;
     },
 
