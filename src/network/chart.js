@@ -8,7 +8,7 @@ export function getCourseContextAnalysis() {
   })
 }
 
-export function studentDuration(interval = 10, maxValue = 20) {
+export function studentDuration(interval, maxValue) {
   return request({
     url: '/analysis/studentDuration',
     params: {

@@ -1,10 +1,7 @@
 <template>
   <Dialog :isShow="isShow" @confirm="confirm" @cancel="cancel">
     <div slot="form">
-      <el-form label-position="right" label-width="80px" :model="row">
-        <!-- <el-form-item label="id">
-          <el-input disabled v-model="row.id"></el-input>
-        </el-form-item> -->
+      <el-form label-position="right" label-width="60px" :model="row">
         <el-form-item label="名称">
           <el-input v-model="row.name"></el-input>
         </el-form-item>
@@ -81,5 +78,12 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+.el-checkbox-group {
+  text-align: left;
+  .el-checkbox {
+    width: 152px;
+    text-align: left;
+  }
+}
 </style>

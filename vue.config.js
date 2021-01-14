@@ -1,25 +1,25 @@
-module.exports = {
-  configureWebpack: {
-    resolve: {
-      //省略文件后缀名
-      extensions: ['js', 'css', 'vue'],
-      //@指src，vue cli3 自动配置
-      alias: {
-        'components': '@/components',
-        'views': '@/views',
-        'assets': '@/assets',
-        'network': '@/network',
-        'router': '@/router',
-        'element': '@/element',
-        'common': '@/common',
-        'store': '@/store'
+  module.exports = {
+    configureWebpack: {
+      resolve: {
+        //省略文件后缀名
+        extensions: ['js', 'css', 'vue'],
+        //@指src，vue cli3 自动配置
+        alias: {
+          'components': '@/components',
+          'views': '@/views',
+          'assets': '@/assets',
+          'network': '@/network',
+          'router': '@/router',
+          'element': '@/element',
+          'common': '@/common',
+          'store': '@/store'
+        }
       }
-    }
-  },
-  transpileDependencies: [
-    'vue-echarts',
-    'resize-detector'
-  ],
-  publicPath: './',
-  assetsDir: 'static'
-}
+    },
+    transpileDependencies: [
+      'vue-echarts',
+      'resize-detector'
+    ],
+    publicPath: './',
+    assetsDir: 'static'
+  }

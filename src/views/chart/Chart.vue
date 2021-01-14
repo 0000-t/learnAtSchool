@@ -1,17 +1,20 @@
 <template>
   <div class="tao-container">
-    <TNTCharts :options="course"></TNTCharts>
+    <InputGroup @search="getInputInfo"></InputGroup>
     <TNTCharts :options="study"></TNTCharts>
+    <TNTCharts :options="course"></TNTCharts>
   </div>
 </template>
 
 <script>
 import TNTCharts from "views/chart/component/TNTCharts";
+import InputGroup from "views/chart/component/InputGroup";
 import { getCourseContextAnalysis, studentDuration } from "network/chart";
 
 export default {
   components: {
     TNTCharts,
+    InputGroup,
   },
   data() {
     return {
@@ -25,8 +28,16 @@ export default {
   methods: {
     async init() {
       let courseRes = await getCourseContextAnalysis();
-      let studentRes = await studentDuration();
+      this.searchStudentDuration(10, 100);
       this.mangerCourse(courseRes.data);
+    },
+
+    getInputInfo(data) {
+      this.searchStudentDuration(data.interval, data.maxValue);
+    },
+
+    async searchStudentDuration(interval, maxValue) {
+      let studentRes = await studentDuration(interval, maxValue);
       this.mangerStudyTimes(studentRes.data);
     },
 

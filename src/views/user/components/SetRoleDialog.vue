@@ -68,5 +68,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less" scpoed>
+.el-checkbox-group {
+  text-align: left;
+}
 </style>
