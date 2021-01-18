@@ -1,7 +1,7 @@
 <template>
   <el-form :inline="true" :model="formInline" class="demo-form-inline">
-    <el-form-item label="id">
-      <el-input v-model.trim="formInline.id" placeholder="id"></el-input>
+    <el-form-item label="角色号">
+      <el-input v-model.trim="formInline.id" placeholder="角色号"></el-input>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submit">查询</el-button>

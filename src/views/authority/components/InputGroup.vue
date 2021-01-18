@@ -1,14 +1,14 @@
 <template>
   <el-form :inline="true" :model="formInline" class="demo-form-inline">
-    <el-form-item label="id">
-      <el-input v-model.trim="formInline.id" placeholder="id"></el-input>
+    <el-form-item label="权限号">
+      <el-input v-model.trim="formInline.id" placeholder="权限号"></el-input>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submit">查询</el-button>
     </el-form-item>
-    <el-form-item>
+    <!-- <el-form-item>
       <el-button type="primary" @click="append">添加</el-button>
-    </el-form-item>
+    </el-form-item> -->
     <el-form-item>
       <el-button type="primary" @click="showAll">显示全部</el-button>
     </el-form-item>

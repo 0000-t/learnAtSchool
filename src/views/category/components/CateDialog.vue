@@ -20,7 +20,7 @@
           <el-input v-model="row.name"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="description">
-          <el-input v-model="row.description"></el-input>
+          <el-input type="textarea" v-model="row.description"></el-input>
         </el-form-item>
       </el-form>
     </div>

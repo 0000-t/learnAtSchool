@@ -174,6 +174,7 @@ export default {
 
     //弹窗点击“确认”按钮
     async confirm(e) {
+      console.log(e);
       this.closeDialog();
       //判断是编辑还是增加操作
       if (e.edit) {
@@ -184,6 +185,11 @@ export default {
           title: e.title,
           teacher: e.teacher,
         });
+        // let formData = new FormData();
+        // for (let item in e) {
+        //   formData.append(item, e[item]);
+        // }
+        // const result = await updateCourseById(formData);
         if (result.flag) {
           this.courseByPathAndSize(1);
           taoMessage("修改");

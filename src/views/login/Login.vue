@@ -70,7 +70,8 @@ export default {
         this.$store.commit("setIsLogin", { login: true });
         this.$store.commit("setUserId", { userId: result.data.user });
         let p = result.data.authoritys[0];
-        this.$router.replace({ path: `/${p}` });
+        let flag = result.data.authoritys.indexOf("chart") >= 0;
+        this.$router.replace({ path: `/${flag ? "chart" : p}` });
       } else {
         taoMessage("登录", "error");
       }

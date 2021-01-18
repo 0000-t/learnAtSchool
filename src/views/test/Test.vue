@@ -193,28 +193,6 @@ export default {
           taoMessage("修改", "error");
         }
       } else {
-        let result = await getInfoByStudentAndCourse({
-          // courseId: e.courseId,
-          // studentId: e.userId,
-          courseId: 1340334252606804000,
-          studentId: 136531351,
-        });
-        if (result.flag) {
-          let data = result.data;
-          this.setTest([
-            {
-              courseId: data.courseId,
-              duration: data.duration,
-              nickName: data.nickName,
-              scope: data.scope,
-              teacherScope: "",
-              title: data.title,
-              userId: data.studentId,
-            },
-          ]);
-        } else {
-          taoMessage("查询", "error");
-        }
       }
     },
     //“查询”回调
@@ -240,10 +218,31 @@ export default {
     currentPath(num) {
       this.testByPathAndSize(this.courseId, num);
     },
-    //点击“添加”按钮
-    append() {
+
+    //点击“混合查询”按钮
+    async append(e) {
       this.row = {};
-      this.isShow = true;
+      let result = await getInfoByStudentAndCourse({
+        courseId: e.courseId,
+        studentId: e.userId,
+      });
+      if (result.flag) {
+        let data = result.data;
+        this.setTest([
+          {
+            courseId: data.courseId,
+            duration: data.duration,
+            nickName: data.nickName,
+            scope: data.scope,
+            teacherScope: "",
+            title: data.title,
+            userId: data.studentId,
+          },
+        ]);
+        taoMessage("查询");
+      } else {
+        taoMessage("查询", "error");
+      }
     },
     //点击“显示”全部按钮
     showAll() {

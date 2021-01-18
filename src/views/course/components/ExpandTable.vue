@@ -15,11 +15,7 @@
       <el-table-column v-if="expand" type="expand">
         <template slot-scope="">
           <el-form label-position="left" inline class="demo-table-expand">
-            <slot name="expand">
-              <el-form-item label="商品名称">
-                <div>sdnvbgksdfbnsb</div>
-              </el-form-item>
-            </slot>
+            <slot name="expand"> </slot>
           </el-form>
         </template>
       </el-table-column>
@@ -34,6 +30,7 @@
       <el-table-column align="center" label="操作" width="250">
         <template slot-scope="scope">
           <el-button
+            class="t-btn"
             type="primary"
             plain
             size="mini"
@@ -42,6 +39,7 @@
             编辑
           </el-button>
           <el-button
+            class="t-btn"
             type="primary"
             plain
             size="mini"

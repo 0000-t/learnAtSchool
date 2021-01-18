@@ -52,14 +52,14 @@ export let routeSet = {
 }
 
 export let routeGroup = {
-  role: 0, //角色
-  authority: 0, //权限管理
-  user: 0, //用户
+  role: 2, //角色
+  authority: 2, //权限管理
+  user: 2, //用户
   category: 1, //分类
   course: 1, //课程
   subject: 1, //课题
   test: 1, //考核
-  group: 2, //小组
-  chart: 2, //分析
+  group: 0, //小组
+  chart: 0, //分析
   integral: 3, //积分
 }

@@ -3,13 +3,13 @@
     <div slot="form">
       <el-form label-position="right" label-width="80px" :model="row">
         <el-form-item label="权限id">
-          <el-input v-model="row.id"></el-input>
+          <el-input disabled v-model="row.id"></el-input>
         </el-form-item>
         <el-form-item label="权限名称">
           <el-input v-model="row.name"></el-input>
         </el-form-item>
         <el-form-item label="描述">
-          <el-input v-model="row.description"></el-input>
+          <el-input type="textarea" v-model="row.description"></el-input>
         </el-form-item>
       </el-form>
     </div>

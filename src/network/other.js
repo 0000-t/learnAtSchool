@@ -9,3 +9,9 @@ export function setParameters(data) {
     data
   })
 }
+
+export function getParameters(id=1) {
+  return request({
+    url: `/parameters/${id}`,
+  })
+}

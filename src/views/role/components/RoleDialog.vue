@@ -6,7 +6,7 @@
           <el-input v-model="row.name"></el-input>
         </el-form-item>
         <el-form-item label="描述">
-          <el-input v-model="row.description"></el-input>
+          <el-input type="textarea" v-model="row.description"></el-input>
         </el-form-item>
         <el-form-item v-if="row.role" label="权限">
           <el-checkbox-group

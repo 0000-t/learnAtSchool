@@ -10,13 +10,16 @@
       </div>
       <div class="slotTable" slot="table">
         <Table
+          editTxt="设置角色"
+          otherTxt="编辑"
+          :showOther="true"
           :tableData="tableData"
           :title="title"
           :total="totalElements"
           :page="page"
-          editTxt="设置角色"
-          :toolWidth="220"
+          :toolWidth="280"
           @edit="handleEdit"
+          @other="handleOther"
           @delete="handleDelete"
           @current="currentPath"
         ></Table>
@@ -131,6 +134,19 @@ export default {
       };
       this.isShowSet = true;
     },
+    handleOther(e) {
+      this.row = {
+        username: e.row.username,
+        nickname: e.row.nickname,
+        type: e.row.type,
+        phone: e.row.phone,
+        password: e.row.password,
+        id: e.row.id,
+        edit: true,
+        other: true,
+      };
+      this.isShow = true;
+    },
     //点击表格的"删除"按钮
     handleDelete(e) {
       MessageBox.confirm("您确定删除这一行吗?", "提示", {
@@ -158,6 +174,24 @@ export default {
       this.closeDialog();
       //判断是编辑还是增加操作
       if (e.edit) {
+        if (e.other) {
+          let result = await updateUserById({
+            username: e.username,
+            nickname: e.nickname,
+            type: e.type == "管理员" ? 0 : 1,
+            phone: e.phone,
+            password: e.password,
+            id: e.id,
+          });
+          console.log(result);
+          if (result.flag) {
+            taoMessage("编辑", "success");
+            this.allUser(1);
+          } else {
+            taoMessage("编辑", "error");
+          }
+          return;
+        }
         let result = await appendRoleToUser({
           userId: e.id,
           roleIds: e.role,

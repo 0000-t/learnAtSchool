@@ -35,9 +35,6 @@ export default {
     background: #fff;
     padding-top: 20px;
     height: 100%;
-    .headCol {
-      // height: 64px;
-    }
     .myCol {
       flex: 1;
       .grid-content {

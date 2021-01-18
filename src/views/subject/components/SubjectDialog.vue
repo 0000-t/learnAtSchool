@@ -6,7 +6,7 @@
           <el-input v-model="row.title"></el-input>
         </el-form-item>
         <el-form-item label="备注">
-          <el-input v-model="row.text"></el-input>
+          <el-input type="textarea" v-model="row.text"></el-input>
         </el-form-item>
         <el-form-item label="链接">
           <el-input v-model="row.url"></el-input>

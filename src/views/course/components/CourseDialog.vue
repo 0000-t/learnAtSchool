@@ -24,7 +24,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="描述">
-          <el-input v-model="row.description"></el-input>
+          <el-input type="textarea" v-model="row.description"></el-input>
+        </el-form-item>
+        <el-form-item label="课程封面">
+          <input type="file" name="file" ref="pic" />
         </el-form-item>
       </el-form>
     </div>
@@ -65,7 +68,11 @@ export default {
   },
   methods: {
     confirm() {
-      this.$emit("confirm", this.row);
+      this.$emit("confirm", {
+        image: this.$refs["pic"].files[0],
+        ...this.row,
+      });
+      this.$refs["pic"].value = "";
     },
     cancel() {
       this.$emit("cancel");

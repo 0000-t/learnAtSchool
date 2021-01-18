@@ -132,7 +132,7 @@ export default {
       } else {
         //添加分类
         let result = await appendAuthority({
-          id: "",
+          id: e.id,
           name: e.name,
           description: e.description,
         });

@@ -42,7 +42,7 @@ export default {
     return {
       routeList: [
         {
-          name: "权限管理",
+          name: "统计分析",
           data: [],
         },
         {
@@ -50,7 +50,7 @@ export default {
           data: [],
         },
         {
-          name: "统计分析",
+          name: "权限管理",
           data: [],
         },
         {

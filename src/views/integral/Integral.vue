@@ -11,11 +11,10 @@
         <span>分数</span>
         <span>
           <input
-            ref="score"
             class="t-input"
             type="number"
             placeholder="请输入内容"
-            :value="score"
+            v-model="score"
           />
         </span>
       </div>
@@ -23,11 +22,10 @@
         <span>描述</span>
         <span>
           <input
-            ref="description"
             class="t-input"
             type="text"
             placeholder="请输入内容"
-            :value="description"
+            v-model="description"
           />
         </span>
       </div>
@@ -38,7 +36,7 @@
 
 <script>
 import Table from "components/common/table/Table";
-import { setParameters } from "network/other";
+import { setParameters, getParameters } from "network/other";
 import taoMessage from "common/message";
 export default {
   components: { Table },
@@ -48,17 +46,28 @@ export default {
       description: "",
     };
   },
+  created() {
+    this.getInfo();
+  },
   methods: {
+    async getInfo() {
+      const result = await getParameters();
+      this.score = +result.data.value;
+      this.description = result.data.description;
+    },
+
     async onSubmit() {
       let result = await setParameters({
-        description: this.$refs["description"].value,
-        value: +this.$refs["score"].value,
+        id: 1,
+        description: this.description,
+        value: +this.score,
       });
       if (result.flag) {
         taoMessage("设置");
       } else {
         taoMessage("设置", "err");
       }
+      this.getInfo();
     },
   },
 };

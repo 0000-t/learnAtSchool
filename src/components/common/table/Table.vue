@@ -40,6 +40,7 @@
       >
         <template slot-scope="scope">
           <el-button
+            class="t-btn"
             v-if="showEdit"
             type="primary"
             plain
@@ -49,6 +50,17 @@
             {{ editTxt }}
           </el-button>
           <el-button
+            class="t-btn"
+            v-if="showOther"
+            type="primary"
+            plain
+            size="mini"
+            @click="handleOther(scope.$index, scope.row)"
+          >
+            {{ otherTxt }}
+          </el-button>
+          <el-button
+            class="t-btn"
             v-if="showDelete"
             size="mini"
             type="danger"
@@ -114,6 +126,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    showOther: {
+      type: Boolean,
+      default: false,
+    },
     showDelete: {
       type: Boolean,
       default: true,
@@ -121,6 +137,10 @@ export default {
     editTxt: {
       type: String,
       default: "编辑",
+    },
+    otherTxt: {
+      type: String,
+      default: "其它",
     },
     pageSize: {
       type: Number,
@@ -137,6 +157,9 @@ export default {
   methods: {
     handleEdit(index, row) {
       this.$emit("edit", { index, row });
+    },
+    handleOther(index, row) {
+      this.$emit("other", { index, row });
     },
     handleDelete(index, row) {
       this.$emit("delete", { index, row });
@@ -163,6 +186,10 @@ export default {
     width: 98%;
     margin: 0 auto 90px;
     flex: 1;
+    .t-btn {
+      position: relative;
+      z-index: 999;
+    }
   }
   .path {
     position: absolute;
