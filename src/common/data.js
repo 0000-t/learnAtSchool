@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 1.0
+ * @Author: tao
+ * @Date: 2020-12-22 22:16:35
+ * @LastEditors: tao
+ * @LastEditTime: 2021-02-09 14:47:29
+ */
 export let routeSet = {
   chart: {
     id: 'chart',
@@ -48,6 +56,21 @@ export let routeSet = {
     name: "用户管理",
     icon: "el-icon-date",
     id: 'user'
+  },
+  price: {
+    name: "奖品信息",
+    icon: "el-icon-date",
+    id: 'price'
+  },
+  teahcer: {
+    name: "课程分析",
+    icon: "el-icon-date",
+    id: 'teahcer'
+  },
+  student: {
+    name: "学习分析",
+    icon: "el-icon-date",
+    id: 'student'
   }
 }
 
@@ -61,5 +84,8 @@ export let routeGroup = {
   test: 1, //考核
   group: 0, //小组
   chart: 0, //分析
+  teahcer: 0,
+  student: 0,
   integral: 3, //积分
+  price: 4
 }

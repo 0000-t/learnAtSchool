@@ -115,6 +115,7 @@ export default {
       const result = await getGroupByPathAndSize();
       this.totalElements = result.data ? result.data.length : 0;
       this.allData = result.data;
+      console.log(result);
       !!this.totalElements && this.setPath(1);
     },
 

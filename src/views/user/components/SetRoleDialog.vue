@@ -6,18 +6,11 @@
           <el-input v-model="row.username"></el-input>
         </el-form-item>
         <el-form-item label="权限">
-          <el-checkbox-group
-            v-model="checked"
-            @change="handleCheckedCitiesChange"
-          >
-            <el-checkbox
-              v-for="(item, index) in row.role"
-              :label="item.id"
-              :key="index"
-              name="role"
-              >{{ item.name }}</el-checkbox
-            >
-          </el-checkbox-group>
+          <el-radio-group v-model="checked">
+            <el-radio v-for="(item, i) in row.role" :key="i" :label="item.id">{{
+              item.name
+            }}</el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
     </div>
@@ -44,14 +37,16 @@ export default {
   },
   data() {
     return {
-      checked: [],
+      checked: "",
     };
   },
   methods: {
     confirm() {
+      console.log(this.checked);
+      // return;
       this.$emit("confirm", {
         id: this.row.id,
-        role: this.checked,
+        role: [this.checked],
         edit: this.row.edit,
       });
     },

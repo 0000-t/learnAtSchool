@@ -2,14 +2,14 @@ import {
   request
 } from './request.js'
 
-//根据页码获取分类信息
+//根据页码获取考核信息
 export function getTestByPathAndSize(page, size = 10, courseId) {
   return request({
     url: `course/getUserCourseByCourse/${page}/${size}?courseId=${courseId}`
   })
 }
 
-//根据id删除分类
+//根据id删除考核
 export function deleteTestById(id) {
   return request({
     url: `/test/${id}`,
@@ -30,7 +30,7 @@ export function updateTestById(data) {
   })
 }
 
-//添加分类信息
+//添加考核信息
 export function appendTest(data) {
   return request({
     url: '/test',
@@ -39,7 +39,7 @@ export function appendTest(data) {
   })
 }
 
-//根据id查找分类
+//根据id查找考核
 export function selectTestById(id) {
   return request({
     url: `/test/${id}`
@@ -52,7 +52,7 @@ export function getCourseByTeacherId(id) {
   })
 }
 
-//获取全部分类
+//获取全部考核
 export function getAllTest() {
   return request({
     url: `/test`

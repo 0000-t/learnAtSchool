@@ -1,7 +1,7 @@
 <template>
   <el-form :inline="true" :model="formInline" class="demo-form-inline">
-    <el-form-item label="选择课程">
-      <el-select v-model="selected" placeholder="请选择" @change="selectCourse">
+    <el-form-item label="课程">
+      <el-select v-model="selected" multiple placeholder="请选择">
         <el-option
           v-for="item in courseList"
           :key="item.id"
@@ -10,6 +10,9 @@
         >
         </el-option>
       </el-select>
+      <el-button class="one-btn" type="primary" @click="selectCourse"
+        >查询</el-button
+      >
     </el-form-item>
     <!-- <el-form-item label="id">
       <el-input v-model.trim="formInline.id" placeholder="id"></el-input>
@@ -46,12 +49,18 @@ export default {
         userId: "",
         courseId: "",
       },
-      selected: "",
+      selected: [],
     };
   },
   methods: {
-    selectCourse(value) {
-      this.$emit("selected", value);
+    selectCourse() {
+      if (!!this.selected.length) {
+        console.log(this.selected.map((item) => item));
+        this.$emit(
+          "selected",
+          this.selected.map((item) => item)
+        );
+      }
     },
     submit(e) {
       this.formInline.id && this.$emit("search", this.formInline);
@@ -67,7 +76,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.one-btn {
+  margin-left: 15px;
+  margin-right: 25px;
+}
 .input-double {
+  width: 300px;
   display: flex;
   .el-input {
     margin-right: 5px;

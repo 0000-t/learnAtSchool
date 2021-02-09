@@ -109,25 +109,29 @@ export default {
   },
   created() {
     this.teacherId = this.$store.getters.getUserId.id;
-    this.getTeacherCourse(this.teacherId);
+    // this.getTeacherCourse(this.teacherId);
     this.init();
   },
   methods: {
-    async getTeacherCourse(id) {
-      let result = await getCourseByTeacherId(id);
-      this.courseList = result.data;
+    async getTeacherCourse(courses) {
+      // let result = await getCourseByTeacherId(id);
+      // this.courseList = result.data;
+      console.log(courses);
+      this.courseList = courses;
     },
 
     async init(courseId) {
       let result = await Promise.all([getAllCourse(), getAllUser()]);
-
+      this.getTeacherCourse(result[0].data);
       //设置课程名称和学生名称
       this.processing(result[0].data, result[1].data.student);
     },
 
     //根据分页获取分类数据
     async testByPathAndSize(courseId, page, size = 10) {
+      console.log(courseId);
       const result = await getTestByPathAndSize(page, size, courseId);
+      console.log(result);
       this.page = page;
       this.totalElements = result.data.totalElements;
 
@@ -137,7 +141,10 @@ export default {
     //获取选择的课程
     selected(value) {
       this.courseId = value;
-      this.testByPathAndSize(value, 1);
+      this.testByPathAndSize(
+        value.map((item) => item),
+        1
+      );
     },
 
     //合并课程学生数据

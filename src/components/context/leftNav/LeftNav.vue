@@ -1,6 +1,6 @@
 <template>
   <div class="left-nav">
-    <div class="logo">
+    <div class="logo" @click="onClick">
       <!-- <img
         src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1605674359432&di=df2e1e987191c7e0d6a0058c19e693ac&imgtype=0&src=http%3A%2F%2Finews.gtimg.com%2Fnewsapp_match%2F0%2F8852827947%2F0.jpg"
         alt=""
@@ -57,6 +57,10 @@ export default {
           name: "基础设置",
           data: [],
         },
+        {
+          name: "奖品信息",
+          data: [],
+        },
       ],
     };
   },
@@ -69,10 +73,13 @@ export default {
       }
     },
   },
-  create() {},
   methods: {
     handleSelect(key, keyPath) {
       this.$route.path != key && this.$router.push(key);
+    },
+    onClick() {
+      let path = this.$route.path;
+      path != "/chart" && this.$router.push("/chart");
     },
   },
 
@@ -80,7 +87,9 @@ export default {
     myRoutes() {
       let routes = this.$store.getters.getRouteList;
       routes.forEach((item) => {
-        this.routeList[routeGroup[item.id]].data.push(item);
+        if (item.path != "/chart") {
+          this.routeList[routeGroup[item.id]].data.push(item);
+        }
       });
       return this.routeList;
     },
@@ -103,6 +112,7 @@ export default {
     height: 60px;
     line-height: 60px;
     text-align: center;
+    cursor: pointer;
   }
   .tao-left-nav {
     // height: 100%;

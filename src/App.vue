@@ -13,6 +13,7 @@
 import Home from "views/home/Home";
 import Login from "views/login/Login";
 import { routeSet } from "common/data";
+
 export default {
   name: "app",
   components: {
@@ -38,6 +39,7 @@ export default {
   methods: {
     getPower(data) {
       //存储权限表
+      console.log(data);
       this.$store.commit("setPower", { power: data });
       //生成路由表
       this.createRouterList(data);
@@ -60,6 +62,7 @@ export default {
         routeSet[item].path = `/${item}`;
         return routeSet[item];
       });
+      console.log(routeList);
       //存储路由表
       this.$store.commit("setRouteList", { routeList });
     },

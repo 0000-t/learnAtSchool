@@ -1,5 +1,5 @@
 <template>
-  <div class="authority">
+  <div class="price">
     <Management>
       <div slot="module">
         <InputGroup
@@ -14,7 +14,7 @@
           :title="title"
           :total="totalElements"
           :page="page"
-          :showDelete="false"
+          :showTool="false"
           :toolWidth="150"
           @edit="handleEdit"
           @delete="handleDelete"
@@ -22,53 +22,61 @@
         ></Table>
       </div>
     </Management>
-    <AuthorityDialog
+    <PriceDialog
       :isShow="isShow"
       :row="row"
       @confirm="confirm"
       @cancel="cancel"
-    ></AuthorityDialog>
+    ></PriceDialog>
   </div>
 </template>
 
 <script>
 import Management from "components/context/management/Management";
 import Table from "components/common/table/Table";
-import InputGroup from "views/authority/components/InputGroup";
-import AuthorityDialog from "views/authority/components/AuthorityDialog";
+import InputGroup from "views/price/components/InputGroup";
+import PriceDialog from "views/price/components/PriceDialog";
 import { MessageBox } from "element-ui";
 import taoMessage from "common/message";
 
 import {
-  getAuthorityByPathAndSize,
-  deleteAuthorityById,
-  updateAuthorityById,
-  appendAuthority,
-  selectAuthorityById,
-} from "network/authority";
+  getPriceByPathAndSize,
+  deletePriceById,
+  updatePriceById,
+  appendPrice,
+  selectPriceById,
+} from "network/price";
 
 export default {
   components: {
     Management,
     Table,
     InputGroup,
-    AuthorityDialog,
+    PriceDialog,
   },
   data() {
     return {
       tableData: [],
       title: [
         {
-          label: "权限id",
+          label: "id",
           prop: "id",
         },
         {
-          label: "权限名称",
-          prop: "name",
+          label: "名称",
+          prop: "title",
         },
         {
-          label: "描述",
-          prop: "description",
+          label: "兑换积分",
+          prop: "cost",
+        },
+        {
+          label: "链接",
+          prop: "url",
+        },
+        {
+          label: "备注",
+          prop: "text",
         },
       ],
       row: {},
@@ -78,12 +86,12 @@ export default {
     };
   },
   created() {
-    this.authorityByPathAndSize(1);
+    this.priceByPathAndSize(1);
   },
   methods: {
     //根据分页获取分类数据
-    async authorityByPathAndSize(page, size = 10) {
-      const result = await getAuthorityByPathAndSize(page, size);
+    async priceByPathAndSize(page, size = 10) {
+      const result = await getPriceByPathAndSize(page, size);
       this.totalElements = result.data.total;
       this.tableData = result.data.rows;
       this.page = page;
@@ -103,10 +111,10 @@ export default {
       })
         .then(async (confirm) => {
           //确认回调
-          let result = await deleteAuthorityById(e.row.id);
+          let result = await deletePriceById(e.row.id);
           if (result.flag) {
             taoMessage("删除", "success");
-            this.authorityByPathAndSize(1);
+            this.priceByPathAndSize(1);
           } else {
             taoMessage("删除", "error");
           }
@@ -120,27 +128,23 @@ export default {
       this.closeDialog();
       //判断是编辑还是增加操作
       if (e.edit) {
-        let result = await updateAuthorityById({
-          id: e.id,
-          name: e.name,
-          description: e.description,
+        let result = await updatePriceById({
+          ...e,
         });
         if (result.flag) {
           taoMessage("修改", "success");
-          this.authorityByPathAndSize(1);
+          this.priceByPathAndSize(1);
         } else {
           taoMessage("修改", "error");
         }
       } else {
         //添加分类
-        let result = await appendAuthority({
-          id: e.id,
-          name: e.name,
-          description: e.description,
+        let result = await appendPrice({
+          ...e,
         });
         if (result.flag) {
           taoMessage("添加", "success");
-          this.authorityByPathAndSize(1);
+          this.priceByPathAndSize(1);
         } else {
           taoMessage("添加", "error");
         }
@@ -148,7 +152,7 @@ export default {
     },
     //“查询”回调
     async search(e) {
-      let result = await selectAuthorityById(e.id);
+      let result = await selectPriceById(e.id);
       if (result.flag) {
         this.tableData = [result.data];
         this.totalElements = this.tableData.length;
@@ -167,7 +171,7 @@ export default {
     },
     //改变页码的回调
     currentPath(num) {
-      this.authorityByPathAndSize(num);
+      this.priceByPathAndSize(num);
     },
     //点击“添加”按钮
     append() {
@@ -176,7 +180,7 @@ export default {
     },
     //点击“显示”全部按钮
     showAll() {
-      this.authorityByPathAndSize(1);
+      this.priceByPathAndSize(1);
     },
   },
   computed: {},
@@ -184,7 +188,7 @@ export default {
 </script>
 
 <style lang="less" scpoed>
-.authority {
+.price {
   height: 100%;
   .slotTable {
     height: 100%;

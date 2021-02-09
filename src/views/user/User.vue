@@ -10,7 +10,7 @@
       </div>
       <div class="slotTable" slot="table">
         <Table
-          editTxt="设置角色"
+          editTxt="设置权限"
           otherTxt="编辑"
           :showOther="true"
           :tableData="tableData"
@@ -59,6 +59,7 @@ import {
   appendRoleToUser,
 } from "network/user";
 import { getAllRole } from "network/role";
+import { getAllAuthority } from "network/authority";
 
 export default {
   components: {
@@ -113,27 +114,36 @@ export default {
 
     async getRole() {
       let result = await getAllRole();
+      console.log(result.data);
       this.role = result.data;
     },
 
     async allUser() {
       let result = await getAllUser();
-      this.tableData = [...result.data.student, ...result.data.teacher];
+      this.tableData = [];
+      Object.keys(result.data).forEach((item) => {
+        this.tableData.push(...result.data[item]);
+      });
       this.tableData.forEach((item) => {
-        item.type = item.type == 0 ? "管理员" : "老师";
+        item.type =
+          item.type == 0 ? "管理员" : item.type == 1 ? "老师" : "学生";
       });
     },
 
-    //点击表格的"编辑"按钮
+    //点击表格的"设置权限"按钮
     handleEdit(e) {
       this.row = {
         username: e.row.username,
         id: e.row.id,
         role: this.role,
         edit: true,
+        type: e.row.type,
       };
+      // console.log(this.row);
       this.isShowSet = true;
     },
+
+    //编辑
     handleOther(e) {
       this.row = {
         username: e.row.username,
@@ -174,11 +184,12 @@ export default {
       this.closeDialog();
       //判断是编辑还是增加操作
       if (e.edit) {
+        //编辑信息
         if (e.other) {
           let result = await updateUserById({
             username: e.username,
             nickname: e.nickname,
-            type: e.type == "管理员" ? 0 : 1,
+            type: e.type == "管理员" ? 0 : e.type == "老师" ? 1 : 2,
             phone: e.phone,
             password: e.password,
             id: e.id,
@@ -192,6 +203,9 @@ export default {
           }
           return;
         }
+        //设置权限
+        console.log(e);
+        // return;
         let result = await appendRoleToUser({
           userId: e.id,
           roleIds: e.role,
@@ -205,10 +219,11 @@ export default {
       } else {
         //添加分类
         let result = await appendUser({
+          id: "0",
           nickname: e.nickname,
-          passwork: e.passwork,
+          password: e.password,
           phone: e.phone,
-          type: e.type,
+          type: e.type == "管理员" ? 0 : e.type == "老师" ? 1 : 2,
           username: e.username,
         });
         if (result.flag) {
