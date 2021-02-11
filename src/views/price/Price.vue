@@ -92,6 +92,7 @@ export default {
     //根据分页获取分类数据
     async priceByPathAndSize(page, size = 10) {
       const result = await getPriceByPathAndSize(page, size);
+      console.log(result);
       this.totalElements = result.data.total;
       this.tableData = result.data.rows;
       this.page = page;

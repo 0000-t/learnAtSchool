@@ -4,13 +4,13 @@
  * @Author: tao
  * @Date: 2021-02-08 16:58:08
  * @LastEditors: tao
- * @LastEditTime: 2021-02-08 18:47:17
+ * @LastEditTime: 2021-02-11 15:57:50
 -->
 <template>
   <div class="teacher">
     <table class="tao_table" width="100%" cellpadding="8">
       <thead>
-        <th>老师</th>
+        <th>学生</th>
         <th>课程</th>
         <th>分数</th>
         <th>学习时长</th>
@@ -19,7 +19,7 @@
       <tbody v-for="key of Object.keys(tableData)" :key="key">
         <tr v-for="(item, i) of tableData[key]" :key="i">
           <td v-if="i == 0" :rowspan="tableData[key].length">
-            {{ key }}
+            {{ item.username }}
           </td>
           <td>{{ item.title }}</td>
           <td>{{ item.teacherScope }}</td>

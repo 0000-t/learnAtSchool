@@ -10,7 +10,7 @@
       </div>
       <div class="slotTable" slot="table">
         <Table
-          editTxt="设置权限"
+          editTxt="赋予角色"
           otherTxt="编辑"
           :showOther="true"
           :tableData="tableData"
@@ -78,10 +78,6 @@ export default {
           prop: "username",
         },
         {
-          label: "昵称",
-          prop: "nickname",
-        },
-        {
           label: "类型",
           prop: "type",
         },
@@ -120,6 +116,7 @@ export default {
 
     async allUser() {
       let result = await getAllUser();
+      console.log(result);
       this.tableData = [];
       Object.keys(result.data).forEach((item) => {
         this.tableData.push(...result.data[item]);

@@ -124,6 +124,7 @@ export default {
       let result = await Promise.all([getAllCourse(), getAllUser()]);
       this.getTeacherCourse(result[0].data);
       //设置课程名称和学生名称
+      if (!result[0].data || result[0].data.length <= 0) return;
       this.processing(result[0].data, result[1].data.student);
     },
 

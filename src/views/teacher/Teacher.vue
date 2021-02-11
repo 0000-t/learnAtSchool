@@ -4,7 +4,7 @@
  * @Author: tao
  * @Date: 2021-02-08 16:58:08
  * @LastEditors: tao
- * @LastEditTime: 2021-02-08 18:31:29
+ * @LastEditTime: 2021-02-11 15:58:25
 -->
 <template>
   <div class="teacher">
@@ -17,7 +17,7 @@
       <tbody v-for="key of Object.keys(tableData)" :key="key">
         <tr v-for="(item, i) of tableData[key]" :key="i">
           <td v-if="i == 0" :rowspan="tableData[key].length">
-            {{ key }}
+            {{ item.username }}
           </td>
           <td>{{ item.title }}</td>
           <td>{{ item.duration }}</td>

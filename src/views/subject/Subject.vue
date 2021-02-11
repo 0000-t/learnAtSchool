@@ -61,7 +61,7 @@ export default {
           prop: "title",
         },
         {
-          label: "备注",
+          label: "描述",
           prop: "text",
         },
         {

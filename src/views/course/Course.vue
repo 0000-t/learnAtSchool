@@ -22,6 +22,7 @@
       </div>
     </Management>
     <CourseDialog
+      v-if="isShow"
       :isShow="isShow"
       :row="row"
       :category="categoryData"
@@ -83,7 +84,11 @@ export default {
         },
         {
           label: "任课老师",
-          prop: "teacher",
+          prop: "teacherName",
+        },
+        {
+          label: "封面",
+          prop: "image",
         },
         {
           label: "课程介绍",
@@ -94,12 +99,20 @@ export default {
           prop: "categoryName",
         },
         {
-          label: "学分",
-          prop: "allScope",
+          label: "创建人",
+          prop: "createMan",
         },
         {
-          label: "用户",
-          prop: "users",
+          label: "创建时间",
+          prop: "createDate",
+        },
+        {
+          label: "修改人",
+          prop: "updateMan",
+        },
+        {
+          label: "修改时间",
+          prop: "updateDate",
         },
       ],
       row: {},
@@ -179,12 +192,9 @@ export default {
       //判断是编辑还是增加操作
       if (e.edit) {
         const result = await updateCourseById({
-          id: e.id,
-          categoryId: +e.categoryId,
-          description: e.description,
-          title: e.title,
-          teacher: e.teacher,
+          ...e,
         });
+        console.log(result);
         // let formData = new FormData();
         // for (let item in e) {
         //   formData.append(item, e[item]);
