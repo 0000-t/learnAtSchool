@@ -38,17 +38,13 @@ import Management from "components/context/management/Management";
 import Table from "components/common/table/Table";
 import InputGroup from "views/test/components/InputGroup";
 import TestDialog from "views/test/components/TestDialog";
-import { MessageBox } from "element-ui";
 import { getAllCourse } from "network/course";
 import taoMessage from "common/message";
 
 import {
   getTestByPathAndSize,
-  deleteTestById,
   updateTestById,
-  appendTest,
   selectTestById,
-  getCourseByTeacherId,
   getInfoByStudentAndCourse,
 } from "network/test";
 import { getAllUser } from "network/user";
@@ -109,13 +105,10 @@ export default {
   },
   created() {
     this.teacherId = this.$store.getters.getUserId.id;
-    // this.getTeacherCourse(this.teacherId);
     this.init();
   },
   methods: {
     async getTeacherCourse(courses) {
-      // let result = await getCourseByTeacherId(id);
-      // this.courseList = result.data;
       console.log(courses);
       this.courseList = courses;
     },

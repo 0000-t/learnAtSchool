@@ -1,13 +1,6 @@
 <template>
   <div class="group">
     <Management>
-      <!-- <div slot="module">
-        <InputGroup
-          @append="append"
-          @search="search"
-          @showAll="showAll"
-        ></InputGroup>
-      </div> -->
       <div class="slotTable" slot="table">
         <Table
           :tableData="tableData"
@@ -32,7 +25,6 @@
 <script>
 import Management from "components/context/management/Management";
 import Table from "components/common/table/Table";
-// import InputGroup from "views/group/components/InputGroup";
 import GroupDialog from "views/group/components/GroupDialog";
 import { MessageBox } from "element-ui";
 import taoMessage from "common/message";
@@ -49,7 +41,6 @@ export default {
   components: {
     Management,
     Table,
-    // InputGroup,
     GroupDialog,
   },
   data() {

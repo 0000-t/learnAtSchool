@@ -1,3 +1,11 @@
+<!--
+ * @Description: 
+ * @Version: 1.0
+ * @Author: tao
+ * @Date: 2020-11-16 23:23:01
+ * @LastEditors: tao
+ * @LastEditTime: 2021-02-18 21:30:19
+-->
 <template>
   <div class="tao-contaniner">
     <Frame>
@@ -63,7 +71,7 @@ export default {
       this.isShow = true;
     },
     async confirm() {
-      let result = await setParameters({
+      await setParameters({
         id: this.row.id,
         description: this.row.description,
         value: this.row.score,

@@ -54,11 +54,6 @@ import {
   updateCourseById,
   appendCourse,
   selectCourseById,
-  appendCatalog,
-  updateCatalog,
-  deleteCatalog,
-  appendUserCourse,
-  getCourseByUserId,
 } from "network/course";
 
 export default {

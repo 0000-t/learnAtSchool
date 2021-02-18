@@ -4,7 +4,7 @@
  * @Author: tao
  * @Date: 2020-12-29 09:51:31
  * @LastEditors: tao
- * @LastEditTime: 2021-02-09 15:19:07
+ * @LastEditTime: 2021-02-18 21:33:49
 -->
 <template>
   <Dialog :isShow="isShow" @confirm="confirm" @cancel="cancel">
@@ -14,11 +14,6 @@
           <el-input v-model="row.username"></el-input>
         </el-form-item>
         <el-form-item label="权限">
-          <!-- <el-radio-group v-model="checked">
-            <el-radio v-for="(item, i) in row.role" :key="i" :label="item.id">{{
-              item.name
-            }}</el-radio>
-          </el-radio-group> -->
           <el-checkbox-group v-model="checked">
             <el-checkbox
               v-for="(item, i) in row.role"
@@ -59,7 +54,6 @@ export default {
   methods: {
     confirm() {
       console.log(this.checked);
-      // return;
       this.$emit("confirm", {
         id: this.row.id,
         role: this.checked,

@@ -4,7 +4,7 @@
  * @Author: tao
  * @Date: 2021-02-08 17:06:31
  * @LastEditors: tao
- * @LastEditTime: 2021-02-08 18:36:01
+ * @LastEditTime: 2021-02-18 21:25:31
  */
 
 const Chart = () => import('views/chart/Chart')
@@ -15,10 +15,8 @@ const Group = () => import('views/group/Group')
 const Test = () => import('views/test/Test')
 const Integral = () => import('views/integral/Integral')
 const User = () => import('views/user/User')
-const Catalogue = () => import('views/catalogue/Catalogue')
 const Subject = () => import('views/subject/Subject')
 const Role = () => import('views/role/Role')
-const Study = () => import('views/study/Study')
 const Login = () => import('views/login/Login')
 const Price = () => import('views/price/Price')
 const Teacher = () => import('views/teacher/Teacher')

@@ -31,14 +31,10 @@
           <el-form-item label="标题" prop="name">
             <el-input v-model="row.name"></el-input>
           </el-form-item>
-          <!-- <el-form-item label="学分" prop="scope">
-            <el-input v-model="row.scope"></el-input>
-          </el-form-item> -->
           <el-form-item v-if="row.edit" label="链接" prop="url">
             <el-input v-model="row.url"></el-input>
           </el-form-item>
           <el-form-item v-if="!row.edit" label="文件">
-            <!-- <input type="file" name="file" ref="file" /> -->
             <el-upload
               class="upload-demo"
               ref="upload"
@@ -50,27 +46,6 @@
               >
             </el-upload>
           </el-form-item>
-          <!-- <el-form-item label="选择">
-            <el-upload
-              class="upload-demo"
-              ref="upload"
-              action="http://47.94.135.125:6081/online-study/course/addCata"
-              :headers="header"
-              :multiple="true"
-              :data="row"
-              :file-list="fileList"
-              :before-upload="beforeUpload"
-              :on-success="afterUpload"
-              :auto-upload="false"
-            >
-              <el-button slot="trigger" size="small" type="primary"
-                >选取文件</el-button
-              >
-              <div slot="tip" class="el-upload__tip">
-                只能上传jpg/png文件，且不超过500kb
-              </div>
-            </el-upload>
-          </el-form-item> -->
         </el-form>
       </div>
     </Dialog>
@@ -106,26 +81,14 @@ export default {
       courseId: "",
       tableData: [],
       title: [
-        // {
-        //   label: "ID",
-        //   prop: "id",
-        // },
         {
           label: "名称",
           prop: "name",
         },
-        // {
-        //   label: "学分",
-        //   prop: "scope",
-        // },
         {
           label: "地址",
           prop: "url",
         },
-        // {
-        //   label: "更新时间",
-        //   prop: "lastUpdataTime",
-        // },
       ],
       row: {
         file: "",
@@ -201,18 +164,12 @@ export default {
       } else {
         //添加目录
         let file = this.$refs["upload"]["_data"].uploadFiles[0].raw;
-        // let file = this.$refs["file"].files[0];
-        // console.log(file);
-        // console.log(this.$refs["file"].files[0]);
 
         let formData = new FormData();
         formData.append("courseId", this.courseId);
         formData.append("file", file);
         formData.append("name", e.name);
-        // console.log(e);
-        // for (let item in e) {
-        //   formData.append(item, e[item]);
-        // }
+
         let result = await appendCatalog(formData);
         console.log(result);
         if (result.flag) {

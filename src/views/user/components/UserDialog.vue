@@ -4,15 +4,12 @@
  * @Author: tao
  * @Date: 2020-11-25 09:27:53
  * @LastEditors: tao
- * @LastEditTime: 2021-02-09 15:16:04
+ * @LastEditTime: 2021-02-18 21:34:02
 -->
 <template>
   <Dialog :isShow="isShow" @confirm="confirm" @cancel="cancel">
     <div slot="form">
       <el-form label-position="right" label-width="80px" :model="row">
-        <!-- <el-form-item label="昵称">
-          <el-input v-model="row.nickname"></el-input>
-        </el-form-item> -->
         <el-form-item label="名字">
           <el-input v-model="row.username"></el-input>
         </el-form-item>
@@ -29,20 +26,6 @@
         <el-form-item label="密码">
           <el-input v-model="row.password"></el-input>
         </el-form-item>
-        <!-- <el-form-item v-if="row.role" label="权限">
-          <el-checkbox-group
-            v-model="checked"
-            @change="handleCheckedCitiesChange"
-          >
-            <el-checkbox
-              v-for="(item, index) in row.role"
-              :label="item.id"
-              :key="index"
-              name="role"
-              >{{ item.name }}</el-checkbox
-            >
-          </el-checkbox-group>
-        </el-form-item> -->
       </el-form>
     </div>
   </Dialog>

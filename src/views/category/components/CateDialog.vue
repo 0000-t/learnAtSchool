@@ -1,3 +1,11 @@
+<!--
+ * @Description: 
+ * @Version: 1.0
+ * @Author: tao
+ * @Date: 2020-11-25 00:52:15
+ * @LastEditors: tao
+ * @LastEditTime: 2021-02-18 21:26:11
+-->
 <template>
   <Dialog
     :isShow="isShow"
@@ -13,9 +21,6 @@
         label-position="right"
         label-width="80px"
       >
-        <!-- <el-form-item label="id">
-          <el-input v-model="row.id" disabled></el-input>
-        </el-form-item> -->
         <el-form-item label="名称" prop="name">
           <el-input v-model="row.name"></el-input>
         </el-form-item>

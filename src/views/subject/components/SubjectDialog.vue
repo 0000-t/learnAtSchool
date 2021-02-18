@@ -4,7 +4,7 @@
  * @Author: tao
  * @Date: 2020-11-28 23:35:21
  * @LastEditors: tao
- * @LastEditTime: 2021-02-09 16:51:16
+ * @LastEditTime: 2021-02-18 21:32:38
 -->
 <template>
   <Dialog width="800px" :isShow="isShow" @confirm="confirm" @cancel="cancel">
@@ -17,7 +17,6 @@
           <el-input v-model="row.url"></el-input>
         </el-form-item>
         <el-form-item label="备注">
-          <!-- <el-input type="textarea" v-model="row.text"></el-input> -->
           <Editor
             v-if="isShow"
             :catchData="catchData"

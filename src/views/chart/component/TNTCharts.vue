@@ -1,3 +1,11 @@
+<!--
+ * @Description: 
+ * @Version: 1.0
+ * @Author: tao
+ * @Date: 2020-12-18 10:49:13
+ * @LastEditors: tao
+ * @LastEditTime: 2021-02-18 21:27:13
+-->
 <template>
   <ECharts
     :autoresize="true"
@@ -76,7 +84,6 @@ export default {
 
 <style lang="less" scoped>
 .my-chart {
-  // min-width: 800px;
   width: 100%;
   min-height: 500px;
 }

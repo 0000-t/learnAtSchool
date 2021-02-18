@@ -1,3 +1,11 @@
+<!--
+ * @Description: 
+ * @Version: 1.0
+ * @Author: tao
+ * @Date: 2020-11-25 09:27:51
+ * @LastEditors: tao
+ * @LastEditTime: 2021-02-18 21:32:56
+-->
 <template>
   <el-form :inline="true" :model="formInline" class="demo-form-inline">
     <el-form-item label="课程">
@@ -14,9 +22,6 @@
         >查询</el-button
       >
     </el-form-item>
-    <!-- <el-form-item label="id">
-      <el-input v-model.trim="formInline.id" placeholder="id"></el-input>
-    </el-form-item> -->
     <el-form-item label="混合查询">
       <div class="input-double">
         <el-input

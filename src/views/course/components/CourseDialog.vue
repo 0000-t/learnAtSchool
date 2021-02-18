@@ -5,9 +5,6 @@
         <el-form-item label="课程名称">
           <el-input v-model="row.title"></el-input>
         </el-form-item>
-        <!-- <el-form-item label="创建人">
-          <el-input v-model="row.teacher"></el-input>
-        </el-form-item> -->
         <el-form-item label="课程分类">
           <el-select
             v-model="row.categoryId"
@@ -24,7 +21,6 @@
           </el-select>
         </el-form-item>
         <el-form-item v-if="!row.edit" label="课程封面">
-          <!-- <input type="file" name="file" ref="pic" /> -->
           <el-upload
             class="upload-demo"
             ref="image"
@@ -39,7 +35,6 @@
           </el-upload>
         </el-form-item>
         <el-form-item label="描述">
-          <!-- <el-input type="textarea" v-model="row.description"></el-input> -->
           <Editor
             v-if="isShow"
             :catchData="catchData"

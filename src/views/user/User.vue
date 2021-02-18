@@ -59,7 +59,6 @@ import {
   appendRoleToUser,
 } from "network/user";
 import { getAllRole } from "network/role";
-import { getAllAuthority } from "network/authority";
 
 export default {
   components: {
@@ -95,7 +94,6 @@ export default {
     };
   },
   created() {
-    // this.userByPathAndSize(1);
     this.allUser();
     this.getRole();
   },

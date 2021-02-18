@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { routeSet, routeGroup } from "common/data";
+import { routeGroup } from "common/data";
 export default {
   props: {
     routes: {
